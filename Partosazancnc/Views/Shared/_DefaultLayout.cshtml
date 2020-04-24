@@ -1,0 +1,109 @@
+﻿@using System.Configuration
+@using System.Web.Optimization
+@using DoormatSite.Tools
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<!--[if IE 9]>			<html class="ie ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html>
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name=googlebot content=index,follow>
+    <meta name=robots content="noodp,noydir">
+    <meta name=apple-mobile-web-app-capable content="yes">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name=description content="@ViewBag.description">
+    <meta name=keywords content="@ViewBag.Keyword">
+    <meta property=og:site_name value="@ViewBag.Title">
+    <meta property=og:title content="@ViewBag.Title">
+    <meta property=og:url content="@ConfigurationManager.AppSettings["MyDomain"]">
+    <meta property=og:image content="@ConfigurationManager.AppSettings["MyDomain"]img/@(ViewBag.thumline != null ? ViewBag.thumline : xml.loadline("siteSetting/logo"))">
+    <meta property=og:image:url content="@ConfigurationManager.AppSettings["MyDomain"]img/@(ViewBag.thumline != null ? ViewBag.thumline : xml.loadline("siteSetting/logo"))">
+    <meta property=og:image:width content="150">
+    <meta property=og:image:height content="150">
+    <meta property=og:image:type content="image/jpg">
+    <meta property=og:description content="@ViewBag.description">
+    <meta property=og:price:currency content="IRR">
+    <meta property=og:locale content="ir_FA">
+    <meta name=twitter:title content="@ViewBag.Title">
+    <meta name=twitter:description content="@ViewBag.description">
+    <meta name=twitter:site content="@ViewBag.Title">
+    <meta name=twitter:card content="@ViewBag.Title">
+    <meta name=twitter:image content="@ConfigurationManager.AppSettings["MyDomain"]img/@(ViewBag.thumline != null ? ViewBag.thumline : xml.loadline("siteSetting/logo"))">
+    <meta keywords="@ViewBag.Keyword">
+    <meta name="Author" content="@(ViewBag.Author != null ? ViewBag.Author : "Ali Hajilou")" />
+    <link rel="canonical" href="@HttpContext.Current.Request.Url.AbsoluteUri" />
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <!-- WEB FONTS : use %7C instead of | (pipe) -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+
+    @Styles.Render("~/css")
+    <!--costom Css-->
+    @RenderSection("Header", false)
+</head>
+
+
+<body class="smoothscroll enable-animation">
+
+    <!-- Top Bar -->
+    <div id="topBar">
+        <div class="container">
+
+            <!-- right -->
+            @Html.Partial("_LoggedInUser")
+
+            <!-- left -->
+            <ul class="top-links list-inline">
+                <li class="hidden-xs"><a href="/Faqs">سوالات متداول</a></li>
+
+            </ul>
+
+        </div>
+    </div>
+    <!-- /Top Bar -->
+
+    @Html.Action("NavbaResult", "PageLayut", new { area = "" })
+
+    @RenderBody()
+    <!-- / -->
+    <!-- FOOTER -->
+    @Html.Action("FooteResult", "PageLayut", new { area = "" })
+    <!-- /FOOTER -->
+    <!-- /wrapper -->
+    <!-- SCROLL TO TOP -->
+    <a href="#" id="toTop"></a>
+
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="inner">
+            <span class="loader"></span>
+        </div>
+    </div><!-- /PRELOADER -->
+    <!-- JAVASCRIPT FILES -->
+    <script type="text/javascript">var plugin_path = '/assets/plugins/';</script>
+    @*<script type="text/javascript" src="/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="/assets/js/scripts.js"></script>*@
+    @Scripts.Render("~/js")
+    <!--Recapcha-->
+    <script src="https://www.google.com/recaptcha/api.js?hl=fa&render=@ConfigurationManager.AppSettings["RecapchaSiteKey"]"></script>
+    <script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+            $("#SiteKeyNews").val(token);
+        });
+    });
+    </script>
+    <!--custom Scripts-->
+    @RenderSection("Scripts", false)
+</body>
+</html>

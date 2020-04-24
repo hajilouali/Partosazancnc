@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Partosazancnc.Models.ProductType>
+
+@{
+    ViewBag.Title = "دسته بندی محصولات یا خدمات";
+}
+
+<h2>دسته بندی محصولات یا خدمات</h2>
+
+<p>
+    @Html.ActionLink("جدید", "Create",new {},new{@class="btn btn-success"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discription)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr id="item_@item.ProductTypeId">
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            <img src="/img/Products/type/thumline/@item.image" class="thumbnail" width="150" height="150"/>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Discription)
+        </td>
+        <td>
+            <a href="/Admin/ProductTypes/edit/@item.ProductTypeId" class="btn btn-success btn-xs white"><i class="fa fa-edit"></i> ویرایش</a> |
+            <a onclick="deleterow(@item.ProductTypeId)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                    title: "آیا از پاک کردن این دسته بندی اطمینان دارید ؟",
+
+                    icon: "warning",
+
+                    buttons: ["خیر", "بله پاک کن"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/ProductTypes/DeleteConfirmed/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("دسته بندی انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+    </script>
+}
+

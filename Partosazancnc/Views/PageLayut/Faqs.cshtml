@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Faqs";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+@section Scripts
+{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<!--
+PAGE HEADER
+
+CLASSES:
+.page-header-xs	= 20px margins
+.page-header-md	= 50px margins
+.page-header-lg	= 80px margins
+.page-header-xlg= 130px margins
+.dark			= dark page header
+
+.shadow-before-1 	= shadow 1 header top
+.shadow-after-1 	= shadow 1 header bottom
+.shadow-before-2 	= shadow 2 header top
+.shadow-after-2 	= shadow 2 header bottom
+.shadow-before-3 	= shadow 3 header top
+.shadow-after-3 	= shadow 3 header bottom
+-->
+
+<section class="page-header parallax parallax-3" style="background-image:url('/assets/images/imgpattern2.jpg')">
+    <div class="overlay dark-0"><!-- dark overlay [0 to 9 opacity] --></div>
+
+    <div class="container">
+        
+        <h1>سوالات متداول</h1>
+
+        <!-- breadcrumbs -->
+        <ol class="breadcrumb">
+            <li><a href="/">خانه</a></li>
+            <li class="active">سوالات متداول</li>
+        </ol><!-- /breadcrumbs -->
+
+    </div>
+</section>
+<!-- /PAGE HEADER -->
+<!-- -->
+<section>
+    <div class="container">
+        @if (ViewBag.succesfaq == "true")
+        {
+            <div class="alert alert-success margin-bottom-30">
+                <!-- SUCCESS -->
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <strong>سوال شما </strong> با موفقیت به کارشناسان ما ارجاع داده شد !
+            </div>
+
+        }
+        @Html.Action("fagresult")
+
+    </div>
+</section>
+<!-- / -->

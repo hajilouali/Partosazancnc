@@ -1,0 +1,91 @@
+﻿@using System.Configuration
+@model Partosazancnc.Models.ViewModels.SendCommentViewModel
+
+@using (Ajax.BeginForm("SendProductCommet", new AjaxOptions()
+{
+    UpdateTargetId = "rsss",
+    OnSuccess = "OnSuccess",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <input type="hidden" id="postID" name="postID" value="@ViewBag.PostId" />
+        <input type="hidden" id="ParentID" name="ParentID" value="" />
+        <input type="hidden" name="SiteKey" id="SiteKey" />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div id="rsss">
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ارسال دیدگاه" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function OnSuccess() {
+        var respons = $("#rsss").html();
+        if (respons.toLowerCase() == 'true') {
+            _toastr("با تشکر از  دیدگاه شما , نظر شما پس از تایید مدیر ثبت خواهد شد.","top-right","success",false);
+        } else {
+            _toastr("خطایی در ارسال نظر شما به وجود آمده است!","top-right","error",false);
+        }
+        $("#rsss").html("");
+        $("#Name").val("");
+        $("#Email").val("");
+        $("#Comment").val("");
+        $("#ParentID").val("");
+
+    }
+    function OnComplete() {
+        grecaptcha.ready(function () {
+            grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+                $("#SiteKey").val(token);
+            });
+        });
+    }
+</script>
+<script src="https://www.google.com/recaptcha/api.js?hl=fa&render=@ConfigurationManager.AppSettings["RecapchaSiteKey"]"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+            $("#SiteKey").val(token);
+        });
+    });
+</script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+    function ReplayComment(id) {
+        $("#ParentID").val(id);
+    }
+</script>

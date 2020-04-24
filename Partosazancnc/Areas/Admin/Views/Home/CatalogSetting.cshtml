@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "تنظیمات کاتالوگ";
+}
+
+<div class="col-md-12">
+    <div class="panel">
+        @if (!string.IsNullOrEmpty(ViewBag.catalog))
+        {
+        <div class="col-md-12 text-center" id="cata">
+            <h3><a href="@ViewBag.catalog">مشاهده کاتالوگ</a></h3>
+            
+            <button onclick="deletcatalog()" type="button" class="btn btn-danger" value="">حذف کاتالوگ</button>
+            
+        </div>
+            
+        }
+        @if (ViewBag.Erorr == true)
+        {
+            <div class="alert alert-danger">
+                <p>لطفا فایل خود را با فرمت های مجاز (RAR , ZIP , PDF, DOC, DOCX) ارسال فرمایید </p>
+            </div>
+        }
+        @if (ViewBag.Erorr == false)
+        {
+            <div class="alert alert-success">
+                <p>تغییرات با موفقیت اعمال گردیده شده!</p>
+            </div>
+        }
+        <div class="panel-body">
+            @using (Html.BeginForm("CatalogSetting", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <input name="upl" type="file" />
+                <input type="submit" value="ذخیره" class="btn btn-success" />
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Css
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deletcatalog() {
+            swal({
+                    title: "آیا از پاک کردن کاتالوگ خود اطمینان دارید ؟",
+
+                    icon: "warning",
+
+                    buttons: ["خیر", "بله پاک کن"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Home/deletcatalog/',
+                            function () {
+                                $("#cata").hide('slow');
+                                swal("کاتالوگ سایت با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+
+    </script>
+}

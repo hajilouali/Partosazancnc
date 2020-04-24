@@ -1,0 +1,108 @@
+﻿@using Tools
+@model IEnumerable<Partosazancnc.Models.Users>
+
+@{
+    ViewBag.Title = "مدیریت کاربران";
+}
+
+
+
+<p>
+    @Html.ActionLink("کاربر جدید", "Create", new object(), new { @class = "btn btn-success" })
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered nomargin">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles.RoleTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegisterDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumer)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr id="item_@item.UserID">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Roles.RoleTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @item.RegisterDate.ToString("D")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumer)
+                </td>
+                <td>
+                    <a href="/Admin/Users/edit/@item.UserID" class="btn btn-success btn-xs white"><i class="fa fa-edit"></i> ویرایش</a> |
+                    <a onclick="deleterow(@item.UserID)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                title: "آیا از پاک کردن این کاربر اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Users/DeleteConfirmed/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("کاربر شما با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+    </script>
+}
+

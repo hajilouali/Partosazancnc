@@ -1,0 +1,42 @@
+﻿@model Partosazancnc.Models.Sliders
+@{
+    Layout = null;
+}
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+<!-- CORE CSS -->
+<link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+<!-- THEME CSS -->
+<link href="/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/css/layout - Copy.css" rel="stylesheet" />
+<link href="/assets/plugins/bootstrap/RTL/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/plugins/bootstrap/RTL/bootstrap-flipped.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/layout-RTL.css" rel="stylesheet" type="text/css" />
+<!-- REVOLUTION SLIDER -->
+<link href="/assets/plugins/slider.revolution/css/extralayers.css" rel="stylesheet" type="text/css" />
+<link href="/assets/plugins/slider.revolution/css/settings.css" rel="stylesheet" type="text/css" />
+<!-- PAGE LEVEL SCRIPTS -->
+<link href="/assets/css/header-1.css" rel="stylesheet" type="text/css" />
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/assets/plugins/';</script>
+<script type="text/javascript" src="/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/assets/js/scripts.js"></script>
+<!-- REVOLUTION SLIDER -->
+<script type="text/javascript" src="/assets/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="/assets/js/view/demo.revolution_slider.js"></script>
+
+
+<div class="slider fullwidthbanner-container roundedcorners">
+    <div class="fullwidthbanner" data-height="600" data-shadow="0" data-navigationStyle="preview2">
+        <ul class="hide">
+            <!-- SLIDE  -->
+            <li data-transition="@Model.data_transition" data-slotamount="@Model.data_slotamount" data-masterspeed="@Model.data_masterspeed" @*data-delay="@item.data_Delay"*@ data-saveperformance="@Model.data_saveperformance" data-title="@Model.SliderTitle" @*data-description="@item.SliderDiscription" data-link="@item.SliderURL"*@ style="@Model.CostomCss">
+
+                <img src="/assets/images/1x1.png" data-lazyload="@Model.ImageSlider" alt="@Model.SliderTitle" data-bgfit="@Model.Imagedatabgfit" data-bgposition="@Model.Imagedatabgposition" data-bgrepeat="no-repeat" />
+                @Html.Action("LayResult", "Home", new { sliderid = @Model.SlideID })
+            </li>
+        </ul>
+    </div>
+</div>

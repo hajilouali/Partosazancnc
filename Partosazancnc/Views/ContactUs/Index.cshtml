@@ -1,0 +1,49 @@
+﻿@using System.Configuration
+
+@{
+    ViewBag.Title = "تماس با ما ";
+    ViewBag.Keyword = ViewBag.Sitekeyword;
+    ViewBag.description = ViewBag.sitedescription;
+    <link rel="canonical" href="@ConfigurationManager.AppSettings["MyDomain"]ContactUs/" />
+}
+
+<!-- -->
+<section>
+    <div class="container">
+
+        <div class="row">
+
+            @Html.Action("FormContactus")
+            <!-- INFO -->
+            <div class="col-md-3 col-sm-3">
+
+                <h2>در باره ما </h2>
+
+                <p>@ViewBag.aboutus</p>
+
+                <hr />
+
+                <p>
+                    <span class="block"><strong><i class="fa fa-map-marker"></i> آدرس :</strong> @ViewBag.address</span>
+                    <span class="block"><strong><i class="fa fa-phone"></i> شماره تماس:</strong> @ViewBag.phone</span>
+                </p>
+
+                <hr />
+
+
+
+            </div>
+            <!-- /INFO -->
+
+        </div>
+
+    </div>
+</section>
+<!-- / -->
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}

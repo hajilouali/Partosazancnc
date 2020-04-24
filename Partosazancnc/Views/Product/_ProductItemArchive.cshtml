@@ -1,0 +1,35 @@
+﻿@model Partosazancnc.Models.Product
+<!-- ITEM -->
+
+
+    <div class="shop-item">
+
+        <div class="thumbnail">
+            <!-- product image(s) -->
+            <a class="shop-item-image" href="/Product/@Model.ProductID">
+                <img class="img-responsive" src="/img/Products/1000×1500/@Model.PicThumbnail" alt="@Model.Title" width="300" />
+            </a>
+            <!-- /product image(s) -->
+
+
+        </div>
+
+        <div class="shop-item-summary text-center">
+            <h2>@Model.Title</h2>
+
+            <!-- price -->
+            <div class="shop-item-summary">
+                @Model.ShortDiscription
+            </div>
+            <!-- /price -->
+        </div>
+
+        <!-- buttons -->
+        <div class="shop-item-buttons text-center">
+            <a class="btn btn-default" href="/Product/@Model.ProductID"><i class="fa fa-info"></i> مشاهده</a>
+        </div>
+        <!-- /buttons -->
+    </div>
+
+
+<!-- /ITEM -->

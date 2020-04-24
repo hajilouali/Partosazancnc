@@ -1,0 +1,169 @@
+﻿@using System.Configuration
+@using Partosazancnc.Models
+@model Partosazancnc.Models.Post
+@{
+    ViewBag.Title = Model.PostTitle;
+    ViewBag.Keyword = Model.KeyWord;
+    ViewBag.description = Model.PostShortDiscription;
+    ViewBag.Author = Model.Users.FullName;
+    ViewBag.thumline = "posts/" + Model.PostImage;
+    <link rel="canonical" href="@ConfigurationManager.AppSettings["MyDomain"]Post/@Model.PostID" />
+
+}
+<section>
+    <div class="container">
+        @if (Model.Vaziaat == Vaziaat.Draft)
+        {
+            <div class="alert alert-warning margin-bottom-40 text-center">
+                <h2>مقاله پیش نویس</h2>
+            </div>
+        }
+
+        <h1 class="blog-post-title">@Model.PostTitle</h1>
+        <ul class="blog-post-info list-inline">
+            <li>
+                <a href="#">
+                    <i class="fa fa-clock-o"></i>
+                    <span class="font-lato">@Model.PostDate.ToString("yyyy MMMM dd")</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-comment-o"></i>
+                    <span class="font-lato">@Model.PostCommentses.Where(p => p.Vaziaat == Partosazancnc.Models.Vaziaat.Publish).ToList().Count نظر کاربران</span>
+                </a>
+            </li>
+            <li>
+                <i class="fa fa-folder-open-o"></i>
+
+                <a class="category" href="#">
+                    <span class="font-lato">@Model.PostType.Title</span>
+                </a>
+
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-user"></i>
+                    <span class="font-lato">@Model.Users.FullName</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="blog-single-small-media">
+            <!-- .inverse = right position (left on RTL) -->
+            <!-- OWL SLIDER -->
+            <div class=" ">
+                <div class="owl-wrapper-outer">
+
+                    <div class="owl-item" style="">
+                        <img class="img-responsive " style="width: 100%" src="/img/posts/265×176/@Model.PostImage" alt="">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="caption-primary">
+                @Model.PostShortDiscription
+            </div>
+        </div>
+
+
+        <!-- article content -->
+        <div style="min-height: 350px">
+            @Html.Raw(Model.PostText)
+        </div>
+
+        <!-- /article content -->
+        <!-- TAGS -->
+        <div class="divider divider-dotted"><!-- divider --></div>
+        @if (!String.IsNullOrEmpty(Model.KeyWord))
+        {
+            foreach (var item in Model.KeyWord.Split(','))
+            {
+                <a class="tag">
+                    <span class="txt">@item</span>
+
+                </a>
+            }
+        }
+        <!-- /TAGS -->
+        <!-- SHARE POST -->
+        <div class="clearfix margin-top-30">
+
+            <span class="pull-left margin-top-6 bold hidden-xs">
+                اشتراک گذاری مقاله :
+            </span>
+
+            <a href="https://www.facebook.com/sharer/sharer.php?u=@ConfigurationManager.AppSettings["MyDomain"]Post/@Model.PostID" class="social-icon social-icon-sm social-icon-transparent social-facebook pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="فیس بوک">
+                <i class="icon-facebook"></i>
+                <i class="icon-facebook"></i>
+            </a>
+
+
+
+            <a href="https://plus.google.com/share?url=@ConfigurationManager.AppSettings["MyDomain"]Post/@Model.PostID" class="social-icon social-icon-sm social-icon-transparent social-gplus pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="گوگل پلاس">
+                <i class="icon-gplus"></i>
+                <i class="icon-gplus"></i>
+            </a>
+
+
+
+            <a href="https://t.me/share/url?url=@ConfigurationManager.AppSettings["MyDomain"]Post/@Model.PostID" class="social-icon social-icon-sm social-icon-transparent social-linkedin pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="تلگرام">
+                <i class="fa fa-send"></i>
+                <i class="fa fa-send"></i>
+            </a>
+
+
+
+        </div>
+        <!-- /SHARE POST -->
+
+
+
+
+        <div class="divider"><!-- divider --></div>
+
+
+        <!-- COMMENTS -->
+        <div id="comments" class="comments">
+
+            <h4 class="page-header margin-bottom-60 size-20">
+                نظرات
+            </h4>
+
+            <!-- comment item -->
+            @Html.Action("PostComments", "Post", new { id = Model.PostID })
+
+
+            <h4 class="page-header size-20 margin-bottom-60 margin-top-100">
+                <span>ارسال نظر</span>
+            </h4>
+
+            <!-- Form -->
+            <div id="comment-reply">
+                @Html.Action("SendPostCommet", "Post", new { id = Model.PostID })
+            </div>
+
+            <!-- /Form -->
+
+        </div>
+        <!-- /COMMENTS -->
+    </div>
+
+
+
+</section>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        function ReplayComment(id) {
+            $("#ParentID").val(id);
+        }
+    </script>
+}

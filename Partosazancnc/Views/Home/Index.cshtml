@@ -1,0 +1,112 @@
+﻿@using System.Configuration
+
+@{
+    ViewBag.Title = ViewBag.SiteName;
+    ViewBag.Keyword = ViewBag.Sitekeyword;
+    ViewBag.description = ViewBag.sitedescription;
+}
+
+@section Header{
+    <!-- REVOLUTION SLIDER -->
+    <link href="/assets/plugins/slider.revolution/css/extralayers.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/slider.revolution/css/settings.css" rel="stylesheet" type="text/css" />
+}
+@section Scripts
+{
+    <!-- REVOLUTION SLIDER -->
+    <script type="text/javascript" src="/assets/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="/assets/js/view/demo.revolution_slider.js"></script>
+    <script type=application/ld+json>
+        {
+        "@@context": "http://schema.org",
+        "@@type": "Organization",
+        "url": "@ConfigurationManager.AppSettings["MyDomain"]",
+        "logo": "@ConfigurationManager.AppSettings["MyDomain"]img/@ViewBag.Logooo"
+        }
+
+    </script>
+    <script type=application/ld+json>
+        {
+        "@@context": "http://schema.org",
+        "@@type": "WebSite",
+        "name" : "@ViewBag.SiteName",
+        "alternateName" : "@ViewBag.sitedescription",
+        "sameAs": [@Html.Raw(ViewBag.sco)],
+        "url": "@ConfigurationManager.AppSettings["MyDomain"]",
+        "potentialAction": {
+            "@@type": "SearchAction",
+        "target":"@ConfigurationManager.AppSettings["MyDomain"]Search?Search={Search}",
+        "query-input": "required name=Search"
+        }
+        }
+    </script>
+}
+
+<!-- REVOLUTION SLIDER -->
+<div class="slider fullwidthbanner-container roundedcorners">
+    
+    <div class="fullwidthbanner" data-height="600" data-shadow="0" data-navigationStyle="preview2">
+        <ul class="hide">
+
+            @Html.Action("SLideResult")
+        </ul>
+
+        <div class="tp-bannertimer"><!-- progress bar --></div>
+    </div>
+</div>
+<!-- /REVOLUTION SLIDER -->
+@if (!string.IsNullOrEmpty(ViewBag.Catalog))
+{
+    <div class="callout callout-theme-color">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-9">
+                    <!-- title + shortdesc -->
+                    <h3>اطلاعات محصولات </h3>
+                    <p>برای در یافت کاتالوگ و اطلاعات محصولات می توانید کاتالوگ ما رو دریافت نمایید </p>
+                </div>
+
+                <div class="col-md-3">
+                    <!-- button -->
+                    <a href="@ViewBag.Catalog" class="btn btn-primary btn-lg">دانلود کاتالوگ</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+}
+
+
+<!-- WELCOME -->
+@Html.Action("WellcomeResult")
+<!-- /WELCOME -->
+<!-- ProductCategory NEWS -->
+@Html.Action("ProductCategoryResult")
+<!-- /ProductCategory NEWS -->
+<!-- Features -->
+@Html.Action("FeaturesResult")
+<!-- /Features -->
+<!-- PARALLAX -->
+@Html.Action("ParallaxResult")
+<!-- /PARALLAX -->
+<!-- RECENT Posts -->
+@Html.Action("RecentPostsResult", "Post")
+<!-- /RECENT Posts -->
+<!--
+controlls-over		= navigation buttons over the image
+buttons-autohide 	= navigation buttons visible on mouse hover only
+
+data-plugin-options:
+"singleItem": true
+"autoPlay": true (or ms. eg: 4000)
+"navigation": true
+"pagination": true
+-->
+<!--Costomers-->
+@Html.Action("CostomeResult")
+
+<!--/Costomers-->

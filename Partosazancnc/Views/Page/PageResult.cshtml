@@ -1,0 +1,13 @@
+﻿@using System.Configuration
+@model Partosazancnc.Models.Pages
+@{
+    ViewBag.Title = Model.PageTitle;
+    ViewBag.Keyword = Model.KeyWord;
+    ViewBag.description = Model.PageShortDiscription;
+    ViewBag.thumline = "page/" + Model.ImageThumline;
+    ViewBag.Author = Model.Users.FullName;
+    <link rel="canonical" href="@ConfigurationManager.AppSettings["MyDomain"]page/@Model.PageID" />
+}
+
+@Html.Raw(Model.PageContent)
+

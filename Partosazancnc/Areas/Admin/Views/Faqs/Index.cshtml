@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Partosazancnc.Models.Faqs>
+
+@{
+    ViewBag.Title = "سوالات متداول";
+}
+
+
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" id="modalbody">
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<p>
+    <button onclick="Create()" type="button" class="btn btn-success btn-lg" id="btn-new" data-toggle="modal" data-target="#myModal">
+        جدید
+    </button>
+
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FaqsTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FaqsDiscription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductTypeId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr id="item_@item.FaqsID">
+
+    <td>
+        @Html.DisplayFor(modelItem => item.FaqsTitle)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FaqsDiscription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProductType.Title)
+    </td>
+    <td>
+        <a onclick="Edit(@item.FaqsID)" class="btn btn-success btn-xs white" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> ویرایش</a> |
+        <a onclick="deleterow(@item.FaqsID)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+    </td>
+</tr>
+    }
+
+</table>
+
+@section Scripts
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                title: "آیا از پاک کردن این سوال اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Faqs/DeleteConfirmed/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("سوال انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        function Create() {
+            $.get("/Admin/Faqs/Create",
+                function (result) {
+                    $("#myModalLabel").html('سوال جدید');
+                    $("#modalbody").html(result);
+                });
+        }
+        function Edit(id) {
+            $.get("/Admin/Faqs/Edit/" + id,
+                function (result) {
+                    $("#myModalLabel").html('ویرایش سوال ');
+                    $("#modalbody").html(result);
+                });
+        }
+    </script>
+}

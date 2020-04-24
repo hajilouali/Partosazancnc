@@ -1,0 +1,118 @@
+﻿@using System.Configuration
+@model Partosazancnc.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewBag.Title = "ثیت نام کاربر";
+}
+@section Scripts
+{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+                $("#SiteKey").val(token);
+            });
+        });
+    </script>
+}
+<section style="background:url('assets/images/demo/wall2.jpg')">
+
+    <div class="display-table">
+        <div class="display-table-cell vertical-align-middle">
+
+            <div class="container">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "sky-form boxed" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="SiteKey" id="SiteKey"/>
+
+                        <div class="form-horizontal">
+                            <header>ثبت نام کاربر جدید</header>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <fieldset class="nomargin">
+
+                                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "label margin-top-20" })
+                                <label class="input">
+                                    <i class="ico-append fa fa-user"></i>
+
+                                    @Html.EditorFor(model => model.UserName, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.UserName, "", new {@class = "text-danger"})
+
+                                </label>
+
+
+                                @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "label margin-top-20" })
+                                <label class="input">
+                                    <i class="ico-append fa fa-user"></i>
+
+                                    @Html.EditorFor(model => model.FullName, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new {@class = "text-danger"})
+
+                                </label>
+
+                                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "label margin-top-20" })
+                                <label class="input">
+                                    <i class="ico-append fa fa-phone"></i>
+
+                                    @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
+
+                                </label>
+
+                                
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "label margin-top-20" })
+                            <label class="input">
+                                <i class="ico-append fa fa-envelope"></i>
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                            </label>
+
+                                
+                                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label margin-top-20" })
+                                <label class="input">
+                                    <i class="ico-append fa fa-lock"></i>
+
+                                    @Html.EditorFor(model => model.Password, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
+
+                                </label>
+
+                                
+                                @Html.LabelFor(model => model.RePassword, htmlAttributes: new { @class = "label margin-top-20" })
+                                <label class="input">
+                                    <i class="ico-append fa fa-lock"></i>
+
+                                    @Html.EditorFor(model => model.RePassword, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.RePassword, "", new {@class = "text-danger"})
+
+                                </label>
+
+                                
+                                <label class="label">
+                                    <input type="submit" value="ثبت نام" class="btn btn-success" />
+                                </label>
+                            </fieldset>
+
+
+
+
+
+                        </div>
+                    }
+
+                </div>
+                <div class="col-md-3"></div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+

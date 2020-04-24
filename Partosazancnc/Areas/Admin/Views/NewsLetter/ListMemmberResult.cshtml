@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Partosazancnc.Models.NewsLettersMail>
+
+
+<table class="table">
+    <tr>
+        <th><input type="checkbox" onchange="cksAllmember()" id="cksAllmember" /></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubmitTime)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="addrow_@item.NewsLettersMailID">
+            <td>
+                <input type="checkbox" class="chkmember" value="@item.NewsLettersMailID" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubmitTime)
+            </td>
+
+            <td>
+                <a onclick="deleterow(@item.NewsLettersMailID)" class="btn btn-danger btn-xs">حذف</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="text-center margin-top-20">
+    @if (ViewBag.PageCount > 1)
+    {
+        <ul class="pagination">
+            @if (ViewBag.pageId > 1)
+            {
+                <li><a onclick="pageid(@(ViewBag.pageId-1))">قبلی</a></li>
+            }
+            else
+            {
+                <li class="disabled"><a href="#">قبلی</a></li>
+
+            }
+            @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+            {
+                if (ViewBag.pageId == i)
+                {
+                    <li class="active"><a href="">@i</a></li>
+                }
+                else
+                {
+                    <li><a onclick="pageid(@i)">@i</a></li>
+                }
+            }
+            @if (ViewBag.pageId < ViewBag.PageCount)
+            {
+                <li><a onclick="pageid(@(ViewBag.pageId+1))">بعدی</a></li>
+            }
+            else
+            {
+                <li class="disabled"><a href="#">بعدی</a></li>
+            }
+
+
+        </ul>
+    }
+
+</div>
+
+
+<script>
+
+    function pageid(id) {
+        var title = $("#Titlefilter").val();
+        var ContentId = $("#ContentId").val();
+        $.get("/Admin/NewsLetter/ListMemmberResult?Title=" + title + "&pageId=" + id + "&id=" + ContentId,
+            function (result) {
+                $("#contentpost").html(result);
+            });
+
+    };
+</script>

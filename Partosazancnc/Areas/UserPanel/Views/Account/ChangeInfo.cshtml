@@ -1,0 +1,71 @@
+﻿@model Partosazancnc.Models.ViewModels.ChangeAccountInfoViewModel
+
+@{
+    ViewBag.Title = "تغییرات اطلاعات کاربری";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+<section style="background:url('/assets/images/demo/wall2.jpg')">
+
+    <div class="display-table">
+        <div class="display-table-cell vertical-align-middle">
+
+            <div class="container">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-6">
+                    @if (ViewBag.Success == true)
+                    {
+                        <div class="alert alert-success">
+                            <p>اطلاعات شما با موفقیت تغییر یافت . </p>
+                        </div>
+                    }
+                    @using (Html.BeginForm("ChangeInfo", "Account", FormMethod.Post, new {@class = "sky-form boxed"}))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                            <header>تغییر اطلاعات کاربری</header>
+                            <hr/>
+                            <fieldset class="nomargin">
+
+                                @Html.LabelFor(model => model.FullName, htmlAttributes: new {@class = "label margin-top-20"})
+                                <label class="input">
+                                    @Html.EditorFor(model => model.FullName, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new {@class = "text-danger"})
+                                </label>
+
+
+
+                                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new {@class = "label margin-top-20"})
+                                <label class="input">
+                                    @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
+                                </label>
+
+                            </fieldset>
+
+                            <footer class="celarfix">
+                                <input type="submit" value="ذخیره اطلاعات" class="btn btn-primary noradius pull-right"/>
+                            </footer>
+
+                        </div>
+                    }
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts
+{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

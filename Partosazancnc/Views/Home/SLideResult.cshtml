@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Partosazancnc.Models.Sliders>
+
+
+
+@foreach (var item in Model)
+{
+    <!-- SLIDE  -->
+    <li data-transition="@item.data_transition"  data-slotamount="@item.data_slotamount" data-masterspeed="@item.data_masterspeed" @*data-delay="@item.data_Delay"*@ data-saveperformance="@item.data_saveperformance" data-title="@item.SliderTitle" @*data-description="@item.SliderDiscription" data-link="@item.SliderURL"*@ style="@item.CostomCss">
+
+        <img src="/assets/images/1x1.png" data-lazyload="@item.ImageSlider" alt="@item.SliderTitle" data-bgfit="@item.Imagedatabgfit" data-bgposition="@item.Imagedatabgposition" data-bgrepeat="no-repeat" />
+        @Html.Action("LayerSlider","Home", new {sliderid=@item.SlideID})
+    </li>
+
+}

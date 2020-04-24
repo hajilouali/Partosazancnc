@@ -1,0 +1,42 @@
+﻿@model Partosazancnc.Models.Faqs
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Faqs</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductType.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductType.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FaqsTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FaqsTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FaqsDiscription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FaqsDiscription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FaqsID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

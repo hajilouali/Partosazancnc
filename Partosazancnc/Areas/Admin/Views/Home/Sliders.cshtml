@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Partosazancnc.Models.Sliders>
+
+@{
+    ViewBag.Title = "اسلاید ها";
+}
+
+
+
+<p>
+    @Html.ActionLink("اسلاید جدید", "CreateSlider", new { }, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SliderTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SliderDiscription)
+        </th>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.ImageSlider)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Vaziaat)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="item_@item.SlideID">
+            <td>
+                @Html.DisplayFor(modelItem => item.SliderTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SliderDiscription)
+            </td>
+
+
+            <td>
+                <img src="@item.ImageSlider" width="150" class="thumbnail" />
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Vaziaat)
+            </td>
+            <td>
+                <a href="/Admin/Home/EditeSlider/@item.SlideID" class="btn btn-success btn-xs white"><i class="fa fa-edit"></i> ویرایش</a> |
+                <a href="/Admin/Home/LayerSlider/@item.SlideID" class="btn btn-blue btn-xs white"><i class="fa fa-pie-chart"></i> لایه ها</a> |
+                <a onclick="deleterow(@item.SlideID)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@section Scripts
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                title: "آیا از پاک کردن این اسلاید اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Home/DeleteSlider/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("اسلاید انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Partosazancnc.Models.PostComments>
+
+
+@foreach (var item in Model.Where(c => c.ParentID == null))
+{
+    <!-- comment item -->
+    <div class="comment-item">
+
+        <!-- user-avatar -->
+        <span class="user-avatar">
+            <img class="media-object" src="/assets/images/avatar.png" width="64" height="64" alt="">
+        </span>
+
+        <div class="media-body">
+            <a onclick="ReplayComment(@item.PostCommentID)" href="#comment-reply" class="scrollTo comment-reply">پاسخ</a>
+            <h4 class="media-heading bold">@item.Name</h4>
+            <small class="block">@item.CreateDate.ToString("yyyy/MM/dd ساعت: HH:mm")</small>
+            @item.Comment
+            @if (Model.Any(c => c.ParentID == item.PostCommentID))
+            {
+                foreach (var sub in Model.Where(c => c.ParentID == item.PostCommentID))
+                {
+                    <!-- comment reply -->
+                    <div class="media">
+
+                        <!-- user-avatar -->
+                        <span class="user-avatar">
+                            <img class="media-object" src="/assets/images/avatar.png" width="64" height="64" alt="">
+                        </span>
+
+                        <div class="media-body">
+                            <h4 class="media-heading bold">@sub.Name</h4>
+                            <small class="block">@sub.CreateDate.ToString("yyyy/MM/dd ساعت: HH:mm")</small>
+                            @sub.Comment
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,87 @@
+﻿@model Partosazancnc.Models.ContactUsMessage
+
+    <div>
+        <span>
+            زمان ارسال پیغام :
+        </span>
+
+        <span>
+            @Model.DateSend.ToString("yyyy/MM/dd  ساعت :HH:mm")
+        </span>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+
+                <div class="col-md-12">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <div class="col-md-12">
+                    @Html.DisplayFor(model => model.Email)
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
+
+                <div class="col-md-12">
+                    @Html.DisplayFor(model => model.Phone)
+                </div>
+
+            </div>
+
+        </div>
+        <hr />
+        <dl class="">
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Subject)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Subject)
+            </dd>
+            <hr />
+            <dt>
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+
+        </dl>
+        <script src="~/ckeditor/ckeditor.js"></script>
+        <div class="row">
+            <form action="/Admin/Contactus/CommentEdite" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Email" value="@Model.Email" />
+                <div class="form-group">
+                    <label class="col-md-12">پاسخ به پیغام : </label>
+                    <input  id="PostText" type="text" name="message" class="form-control"/>
+                </div>
+                <button type="submit" class="btn btn-success">ارسال پاسخ</button>
+            </form>
+        </div>
+    </div>
+
+<script>
+   
+
+    
+        
+    
+    
+</script>

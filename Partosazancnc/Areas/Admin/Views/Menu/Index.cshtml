@@ -1,0 +1,194 @@
+﻿@using Partosazancnc.Models
+@using Partosazancnc.Models.ViewModels
+@model  IEnumerable<Partosazancnc.Models.Menu>
+@{
+    ViewBag.Title = "تنظیمات منو";
+}
+<div class="row">
+    <div class="col-md-8">
+        @if (Model != null)
+        {
+            <ul>
+                @foreach (var item in Model.Where(p => p.ParentID == 0))
+                {
+                    <li id="Item_@item.MenusID">
+                        <form class="row" >
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <input readonly="readonly" type="text" class="form-control" id="Schoolname" name="Schoolname" value="@item.MenuTitle" />
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <input readonly="readonly" type="text" class="form-control" id="Age" name="Age" value="@item.URL" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <button class="btn btn-danger" type="button" onclick="deletrow(@item.MenusID)"> <i class="fa fa-minus"></i> </button>
+                                </div>
+                            </div>
+                        </form>
+                        @if (Model.Where(p => p.ParentID == item.MenusID) != null)
+                        {
+                            <ul>
+                                @foreach (var variabale in Model.Where(a => a.ParentID == item.MenusID))
+                                {
+                                    <li id="Item_@variabale.MenusID">
+                                        <form class="row" >
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <input readonly="readonly" type="text" class="form-control" id="Schoolname" name="Schoolname" value="@variabale.MenuTitle" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <input readonly="readonly" type="text" class="form-control" id="Age" name="Age" value="@variabale.URL" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <button class="btn btn-danger" type="button" onclick="deletrow(@variabale.MenusID)"> <i class="fa fa-minus"></i> </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        @if (Model.Where(a => a.ParentID == variabale.MenusID).Any())
+                                        {
+                                            <ul>
+                                                @foreach (var submenu in Model.Where(a => a.ParentID == variabale.MenusID))
+                                                {
+                                                    <li id="Item_@submenu.MenusID">
+                                                        <form class="row" >
+                                                            <div class="col-sm-5">
+                                                                <div class="form-group">
+                                                                    <input readonly="readonly" type="text" class="form-control" id="Schoolname" name="Schoolname" value="@submenu.MenuTitle" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-5">
+                                                                <div class="form-group">
+                                                                    <input readonly="readonly" type="text" class="form-control" id="Age" name="Age" value="@submenu.URL" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-2">
+                                                                <div class="form-group">
+                                                                    <button class="btn btn-danger" type="button" onclick="deletrow(@submenu.MenusID)"> <i class="fa fa-minus"></i> </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+
+                    </li>
+
+                }
+            </ul>
+        }
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                @{
+                    List<MenuItemViewModel> ia = ViewBag.item;
+                    List<Menu> menulists = ViewBag.parents;
+                }
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">ایتم ها </label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option value="">انتخاب کنید</option>
+                        @foreach (var i in ia)
+                        {
+                            <option value="@i.URL">@i.Title</option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">مادر</label>
+                    </div>
+                    <select class="custom-select" id="parent">
+                        <option value="">انتخاب کنید</option>
+                        @if (menulists != null)
+                        {
+                            foreach (var l in menulists)
+                            {
+                                <option value="@l.MenusID">@l.MenuTitle</option>
+                            }
+                        }
+
+                    </select>
+                </div>
+                <div class="margin-top-50">
+                    <button id="addRow" class="btn btn-success btn-block">افزودن</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        $("#addRow").click(function () {
+
+            var url = $("#inputGroupSelect01").val();
+            if (url == '') {
+                alert("لطفا عنوان منو را انتخاب نمایید !");
+            }
+            else {
+                var parent = $("#parent").val();
+                if (parent == '') {
+                    parent = 0;
+                }
+                $.get('/Admin/Menu/addmenu?title=' + $("#inputGroupSelect01 option:selected").text() +
+                    "&url=" +
+                    url +
+                    "&parentid=" +
+                    parent, function () {
+                        location.reload();
+                    });
+            }
+        });
+    function deletrow(id) {
+        swal({
+                title: "آیا از پاک کردن این مورد اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.get('/Admin/Menu/deletrowmenu/' + id,
+                        function () {
+                            $("#Item_" + id).hide('slow');
+                            swal("برند انتخاب شده با موفقیت حذف گردید .",
+                                {
+                                    icon: "success",
+                                    button: "تایید"
+                                });
+                        });
+
+                } else {
+                    swal("دستور حذف متوقف گردید", { button: "تایید" });
+                }
+            });
+        }
+    </script>
+}

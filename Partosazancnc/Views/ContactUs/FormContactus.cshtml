@@ -1,0 +1,120 @@
+﻿@using System.Configuration
+@model Partosazancnc.Models.ViewModels.ContactusViewModel
+
+<!-- FORM -->
+    <div class="col-md-9 col-sm-9">
+        <h3>لطفا با ارسال نظرات و انتقادات خود در <span>ارایه خدمات بهتر</span> ما را یاری بفرمایید</h3>
+        <!-- Alert Success -->
+        <div id="alert_success" class="alert alert-success margin-bottom-30">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>Thank You!</strong> Your message successfully sent!
+        </div><!-- /Alert Success -->
+        <!-- Alert Failed -->
+        <div id="alert_failed" class="alert alert-danger margin-bottom-30">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>[SMTP] Error!</strong> Internal server error!
+        </div><!-- /Alert Failed -->
+        <!-- Alert Mandatory -->
+        <div id="alert_mandatory" class="alert alert-danger margin-bottom-30">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>Sorry!</strong> You need to complete all mandatory (*) fields!
+        </div><!-- /Alert Mandatory -->
+
+        @using (Ajax.BeginForm("FormContactus", new AjaxOptions()
+        {
+            UpdateTargetId = "rsss",
+            OnSuccess = "OnSuccess",
+            OnComplete = "OnComplete"
+        }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="SiteKey" id="SiteKey" />
+            <fieldset>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <label for="contact:name">نام / شرکت *</label>
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-md-4">
+                            <label for="contact:email">آدرس ایمیل *</label>
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-md-4">
+                            <label for="contact:phone">شماره تماس</label>
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="contact:subject">موضوع *</label>
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="contact:message">پیغام *</label>
+                            @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control", maxlength = "10000", rows = "8" } })
+                            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div id="rsss">
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> ارسال پیغام</button>
+                </div>
+            </div>
+        }
+    </div>
+<!-- /FORM -->
+<script>
+    function OnSuccess() {
+        var respons = $("#rsss").html();
+        if (respons.toLowerCase() == 'true') {
+            _toastr("با تشکر از  پیغام شما , کارشناسان ما پس از بررسی پیفام شما پاسخ شما را خواهند داد.","top-right","success",false);
+        } else {
+            _toastr("خطایی در ارسال پیغام شما به وجود آمده است!","top-right","error",false);
+        }
+        $("#rsss").html("");
+        $("#Name").val("");
+        $("#Email").val("");
+        $("#Phone").val("");
+        $("#Subject").val("");
+        $("#Message").val("");
+
+    }
+    function OnComplete() {
+        grecaptcha.ready(function () {
+            grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+                $("#SiteKey").val(token);
+            });
+        });
+    }
+</script>
+<script src="https://www.google.com/recaptcha/api.js?hl=fa&render=@ConfigurationManager.AppSettings["RecapchaSiteKey"]"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+            $("#SiteKey").val(token);
+        });
+    });
+</script>

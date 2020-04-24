@@ -1,0 +1,21 @@
+﻿@model Partosazancnc.Models.Post
+<div class="img-hover wow fadeInUp">
+    <a href="/Post/@Model.PostID">
+        <img class="img-responsive" src="/img/posts/265×176/@Model.PostImage" alt="@Model.PostTitle">
+    </a>
+
+    <h4 class="text-center margin-top-20"><a href="/Post/@Model.PostID">@Model.PostTitle</a></h4>
+    <p class=" text-justify">@Model.PostShortDiscription</p>
+    <ul class="text-center size-12 list-inline list-separator">
+        <li>
+            <i class="fa fa-calendar"></i>
+            @Model.PostDate.ToString("yyyy/MM/dd")
+        </li>
+        <li>
+            <a href="/Post/@Model.PostID#comments">
+                <i class="fa fa-comments"></i>
+                @Model.PostCommentses.Count
+            </a>
+        </li>
+    </ul>
+</div>

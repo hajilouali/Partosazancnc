@@ -1,0 +1,30 @@
+﻿<li class="dropdown pull-left">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+        <img class="user-avatar" alt="" src="/Areas/Admin/assets/images/noavatar.jpg" height="34" />
+        <span class="user-name">
+            <span class="hidden-xs">
+                @User.Identity.Name <i class="fa fa-angle-down"></i>
+            </span>
+        </span>
+    </a>
+    <ul class="dropdown-menu hold-on-click">
+        
+       
+        <li>
+            <!-- settings -->
+            <a href="/"><i class="fa fa-mail-reply"></i> بازگشت به سایت</a>
+            <a href="/userpanel/account/ChangeInfo"><i class="fa fa-cogs"></i> تنظیمات</a>
+        </li>
+
+        <li class="divider"></li>
+
+        <li>
+            <!-- lockscreen -->
+            <a href="/Admin/Account/PageLock"><i class="fa fa-lock"></i> قفل صفحه</a>
+        </li>
+        <li>
+            <!-- logout -->
+            <a href="/Account/LogOff"><i class="fa fa-power-off"></i> خروج</a>
+        </li>
+    </ul>
+</li>

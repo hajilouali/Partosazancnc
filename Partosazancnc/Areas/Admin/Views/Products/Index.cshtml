@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "محصولات";
+}
+
+
+<p>
+    @Html.ActionLink("محصول جدید", "Create", new { }, new { @class = "btn btn-success" })
+</p>
+<fieldset>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="profileFirstName">فیلتر  محصولات</label>
+        <div class="col-md-12">
+            <input type="text" class="form-control" id="Titlefilter">
+        </div>
+    </div>
+</fieldset>
+<div class="form-group margin-top-10">
+    <div id="contentpost" class="">
+
+    </div>
+
+</div>
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+
+        $(function () {
+            updatecontet();
+        });
+        $("#Titlefilter").on('input',
+            function () {
+                updatecontet();
+            });
+        function updatecontet() {
+            var titlevalue = $("#Titlefilter").val();
+            $.get("/Admin/Products/ProductResult?Title=" + titlevalue,
+                function (result) {
+
+                    $("#contentpost").html(result);
+                });
+        };
+
+        function deleterow(id) {
+            swal({
+                title: "آیا از پاک کردن این محصول اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Products/DeleteConfirmed/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("مقاله انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+    </script>
+}

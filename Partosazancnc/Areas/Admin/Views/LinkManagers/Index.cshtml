@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Partosazancnc.Models.LinkManager>
+
+@{
+    ViewBag.Title = "مدیریت لینک ها";
+}
+
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" id="modalbody">
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<p>
+    <button onclick="Create()" type="button" class="btn btn-success btn-lg" id="btn-new" data-toggle="modal" data-target="#myModal">
+        جدید
+    </button>
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReDirectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RedirectToUrl)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="item_@item.LinkMAnagerId">
+            <td>
+                @Html.DisplayFor(modelItem => item.ReDirectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RedirectToUrl)
+            </td>
+            <td>
+                <a onclick="Edit(@item.LinkMAnagerId)" class="btn btn-success btn-xs white" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> ویرایش</a> |
+                <a onclick="deleterow(@item.LinkMAnagerId)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@section Scripts
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                    title: "آیا از پاک کردن این سوال اطمینان دارید ؟",
+
+                    icon: "warning",
+
+                    buttons: ["خیر", "بله پاک کن"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get(' /Admin/LinkManagers/DeleteConfirmed/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("سوال انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        function Create() {
+            $.get("/Admin/LinkManagers/Create",
+                function (result) {
+                    $("#myModalLabel").html('افزودن لینک جدید');
+                    $("#modalbody").html(result);
+                });
+        }
+        function Edit(id) {
+            $.get("/Admin/LinkManagers/Edit/" + id,
+                function (result) {
+                    $("#myModalLabel").html('ویرایش لینک ');
+                    $("#modalbody").html(result);
+                });
+        }
+    </script>
+}

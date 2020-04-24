@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Partosazancnc.Models.ProductType>
+<section>
+    <div class="container">
+
+        <div class="heading-title heading-dotted text-center">
+            <h2>دسته بندی محصولات ما</h2>
+        </div>
+        <div class="owl-carousel owl-padding-10 buttons-autohide controlls-over" data-plugin-options='{"singleItem": false, "items":"4", "autoPlay": 4000, "navigation": true, "pagination": false}'>
+            @foreach(var item in Model)
+            {
+                <div class="img-hover">
+                    <a href="/">
+                        <img class="img-responsive" src="/img/Products/type/265×176/@item.image" alt="@item.Title">
+                    </a>
+                    <h4 class="text-center margin-top-20"><a href="/">@item.Title</a></h4>
+                    <p class="text-center">@item.Discription</p>
+                    <a class="btn btn-primary" href="/ProductArchive?ProductCategory=@item.ProductTypeId">بیشتر بدانید</a>
+                </div>
+            }
+        </div>
+    </div>
+</section>

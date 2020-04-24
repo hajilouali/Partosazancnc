@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Partosazancnc.Models.Post>
+<input type="hidden" value="@ViewBag.selectGroup" name="Groupsid" id="Groupsid" />
+<input type="hidden" value="@ViewBag.pageId" name="pageId" id="pageId" />
+<input type="hidden" value="@ViewBag.productTitle" name="Titlefilter" id="Titlefilter" />
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <!-- POST ITEM -->
+        <div class="blog-post-item col-md-4 col-sm-4 ">
+            @Html.Partial("_PostRelative", item)
+
+        </div>
+
+        <!-- /POST ITEM -->
+    }
+</div>
+
+
+<!-- PAGINATION -->
+<div class="text-center margin-top-20">
+    @if (ViewBag.PageCount > 1)
+    {
+        <ul class="pagination">
+            @if (ViewBag.pageId > 1)
+            {
+                <li><a onclick="pageid(@(ViewBag.pageId-1))">قبلی</a></li>
+            }
+            else
+            {
+                <li class="disabled"><a >قبلی</a></li>
+
+            }
+            @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+            {
+                if (ViewBag.pageId == i)
+                {
+                    <li class="active"><a >@i</a></li>
+                }
+                else
+                {
+                    <li><a onclick="pageid(@i)">@i</a></li>
+                }
+            }
+            @if (ViewBag.pageId < ViewBag.PageCount)
+            {
+                <li><a onclick="pageid(@(ViewBag.pageId+1))">بعدی</a></li>
+            }
+            else
+            {
+                <li class="disabled"><a >بعدی</a></li>
+            }
+
+
+        </ul>
+    }
+
+</div>
+<!-- /PAGINATION -->
+<script>
+   
+</script>

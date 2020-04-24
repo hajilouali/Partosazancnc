@@ -1,0 +1,79 @@
+﻿@using Partosazancnc.Models.ViewModels
+
+@{
+    ViewBag.Title = "داشبورد ";
+    VisiteViewModel list = ViewBag.listmodel as VisiteViewModel;
+ }
+
+<div class="row">
+    <div class="col-sm-4">
+        <a href="/Admin/Products" class="btn btn-primary btn-featured btn-inverse">
+            <span style="font-size: 20px">@ViewBag.products محصول منتشر شده </span>
+            <i class="fa fa-truck"></i>
+        </a>
+    </div>
+    <div class="col-sm-4">
+        <a href="/Admin/Posts" class="btn btn-warning btn-featured btn-inverse">
+            <span style="font-size: 20px">@ViewBag.PoctCount مقاله منتشر شده </span>
+            <i class="et-notebook"></i>
+        </a>
+    </div>
+    <div class="col-sm-4">
+        <a class=" btn-success btn-featured btn-inverse">
+            <span style="font-size: 20px">@DateTime.Now.ToString("dd MMMM yyyy")</span>
+            <i class="et-calendar"></i>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="panel">
+        <h3 class="panel-heading ">آمار بازدید</h3>
+       
+        <div class="panel-body">
+            <canvas class="chartjs fullwidth height-300" id="lineChartCanvas"></canvas>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function() {
+            if (@ViewBag.repost!=0)
+            {
+
+        _toastr(" خوش آمدید ! شما "+@ViewBag.repost+" رویداد جدید در پنل مدیریتی دارید ...","top-right","success",false);
+            }
+            Daly();
+        });
+
+       
+        function Daly() {
+            loadScript(plugin_path + 'chart.chartjs/Chart.min.js', function() {
+                var lineChartCanvasd = {
+                    labels: [@Html.Raw(list.daynale)],
+                    datasets:[
+                        {
+                            label: "daly dataset",
+                            fillColor : "rgba(220,220,220,0.2)",
+                            strokeColor : "rgba(220,220,220,1)",
+                            pointColor : "rgba(220,220,220,1)",
+                            pointStrokeColor : "#fff",
+                            pointHighlightFill : "#fff",
+                            pointHighlightStroke : "rgba(220,220,220,1)",
+                            data : [@list.Count]
+                        }
+                    ]
+                };
+
+                var ctx = document.getElementById("lineChartCanvas").getContext("2d");
+                new Chart(ctx).Line(lineChartCanvasd);
+            });
+        }
+       
+
+
+    </script>
+
+}

@@ -1,0 +1,49 @@
+﻿@using System.Configuration
+@model Partosazancnc.Models.ViewModels.UserFaqs
+    <h4><strong>سوال</strong> خود را از ما بپرسید؟</h4>
+@using (Html.BeginForm("UserFags","PageLayut",FormMethod.Post,new{@class="sky-form clearfix"})) 
+{
+    @Html.AntiForgeryToken()
+    
+    <input type="hidden" name="SiteKey" id="SiteKey" on />
+   
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <label class="input">
+            
+        <i class="ico-prepend fa fa-user"></i>
+                @Html.EditorFor(model => model.YourName, new { htmlAttributes = new { @class = "form-control",placeholder="نام شما",required=true } })
+                @Html.ValidationMessageFor(model => model.YourName, "", new { @class = "text-danger" })
+           
+        </label>
+
+        <label class="input">
+            
+        <i class="ico-prepend fa fa-envelope"></i>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" ,placeholder="ایمیل شما",required=true} })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            
+        </label>
+
+        <label class="textarea">
+            
+        <i class="ico-prepend fa fa-comment"></i>
+                @Html.EditorFor(model => model.Questions, new { htmlAttributes = new { @class = "form-control" ,placeholder="سوال خود را وارد نمایید ... ",required=true} })
+                @Html.ValidationMessageFor(model => model.Questions, "", new { @class = "text-danger" })
+           
+        </label>
+
+        
+                <input  onclick="fqsend()" type="submit" value="ارسال سوال" class="btn btn-primary btn-sm pull-right" />
+            
+    
+}
+<script src="https://www.google.com/recaptcha/api.js?hl=fa&render=@ConfigurationManager.AppSettings["RecapchaSiteKey"]"></script>
+
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@ConfigurationManager.AppSettings["RecapchaSiteKey"]', { action: 'homepage' }).then(function (token) {
+            $("#SiteKey").val(token);
+        });
+    });
+</script>

@@ -1,0 +1,21 @@
+﻿@model Partosazancnc.Models.NewsLettersMail
+@{
+    ViewBag.Title = "DeactiveNewsLetter";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+<section class="margin-top-50">
+    @if (ViewBag.result == true)
+    {
+        <div class="alert alert-success">
+            <h3>@Model.Email با موفقیت از لیست ارسال خبرنامه ها حذف گردیده شد.</h3>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <h3>خطایی در پردازش دستور شما بوجود امده است . </h3>
+            <p>در صورت بروز مشکل می توانید با مدیر سایت تماس حاصل بفرمایید .  </p>
+        </div>
+    }
+</section>
+

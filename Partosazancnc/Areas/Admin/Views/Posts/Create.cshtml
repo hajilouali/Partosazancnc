@@ -1,0 +1,137 @@
+﻿@model Partosazancnc.Models.Post
+
+@{
+    ViewBag.Title = "مقاله جدید";
+}
+
+@section Css
+{
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+}
+
+
+@using (Html.BeginForm("Create", "Posts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(Model => Model.PostID)
+        <div class="col-md-8">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostTitle, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PostTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PostTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostShortDiscription, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PostShortDiscription, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PostShortDiscription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostText, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PostText, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PostText, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostImage, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            <img src="/img/nopic.jpg" width="150" height="150" class="thumbnail" id="thumbnail"/>
+                            <input type="file" name="img" id="img"/>
+                            @Html.ValidationMessageFor(model => model.PostImage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Vaziaat, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EnumDropDownListFor(model=>model.Vaziaat, null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Vaziaat, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostTypeID, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("PostTypeID", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PostTypeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.KeyWord, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+
+                            <input id="form-tags-1" name="KeyWord" type="text" value="">
+                            <small class="text-muted block">کلمات کلیدی را با کلید Tab از یکدیگر جدا فرمایید</small>
+                            @Html.ValidationMessageFor(model => model.KeyWord, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class=" col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-success btn-lg" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("بازگشت", "Index")
+</div>
+
+@section Scripts
+{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/adapters/jquery.js"></script>
+    <script src="~/Scripts/TagsJs.js"></script>
+
+    <script>
+        $(function () {
+            $('#PostText').ckeditor();
+
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#thumbnail').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#img").change(function () {
+            readURL(this);
+        });
+    </script>
+    <!---->
+    
+}

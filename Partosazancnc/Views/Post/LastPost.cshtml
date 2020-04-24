@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Partosazancnc.Models.Post>
+@foreach(var item in Model)
+{
+    <div class="row tab-post">
+        <!-- post -->
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <a href="/post/@item.PostID">
+                <img src="/img/posts/thum/@item.PostImage" width="50" alt="@item.PostTitle" />
+            </a>
+        </div>
+        <div class="col-md-9 col-sm-9 col-xs-9">
+            <a href="/post/@item.PostID" class="tab-post-link">@item.PostTitle</a>
+            <small>@item.PostDate.ToString("yyyy MMMM dd")</small>
+        </div>
+    </div><!-- /post -->
+}
+

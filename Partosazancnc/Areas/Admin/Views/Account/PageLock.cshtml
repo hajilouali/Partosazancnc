@@ -1,0 +1,83 @@
+﻿@model Partosazancnc.Models.ViewModels.AccountLockViewModel
+@using System.Web.UI.WebControls
+@using DoormatSite.Tools
+@{
+    Layout = null;
+
+}
+
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>صفحه قفل کاربری</title>
+    <meta name="description" content="" />
+    <meta name="Author" content="Dorin Grigoras [www.stepofweb.com]" />
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Areas/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/Areas/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+</head>
+<!--
+    .boxed = boxed version
+-->
+<body>
+
+
+    <div class="lockscreen">
+        <div class="inner">
+            @using (Html.BeginForm("PageLock", "Account", FormMethod.Post, new { dir = "rtl", align = "right" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="lock-container clearfix margin-top-10">
+                    @Html.HiddenFor(Model=>Model.Email)
+                    <!-- avatar - remove if not needed . Recommended: 120x120px -->
+                    <img class="avatar" src="/Areas/Admin/assets/images/noavatar.jpg" width="120" alt="avatar" />
+
+                    <span class="pull-right note"><i class="fa fa-lock"></i> حالت قفل</span>
+                    <h1>@Model.FullName</h1>
+                    <a href="mailto:@Model.Email">@Model.Email</a>
+
+                    <div class="input-group margin-top-10 margin-bottom6">
+                        @Html.EditorFor(Model=>Model.Password,new{@class="form-control",placeholder="گذر واژه را وارد نمایید"})
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-sign-in"></i></button>
+                        </div>
+                    </div>
+
+                    <p class="note nomargin">
+                        شما @Model.FullName نیستید ؟! <a href="/Account/LogOff">کلیک کنید</a>
+                    </p>
+
+                </div>
+
+                <p class="clearfix size-12 margin-top3">
+                    تمامی حقوق برای کمپانی @xml.loadline("siteSetting/siteName") و همچنین کاربر @Model.FullName محفوظ است - 1396
+                </p>
+
+            }
+
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT FILES -->
+    <script type="text/javascript">var plugin_path = '/Areas/Admin/assets/plugins/';</script>
+    <script type="text/javascript" src="/Areas/Admin/assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/Areas/Admin/assets/js/app.js"></script>
+</body>
+</html>

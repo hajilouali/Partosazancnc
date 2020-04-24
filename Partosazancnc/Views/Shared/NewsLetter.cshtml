@@ -1,0 +1,116 @@
+﻿@using System.Configuration
+@using DoormatSite.Tools
+@model Partosazancnc.Models.ViewModels.NewsLetterViewModel
+
+<div bgcolor="#FFFFFF" style="background-color: #FFFFFF; direction: rtl; font-family: tahoma;margin: 0;padding: 0;" >
+
+    <!-- HEADER -->
+    <table  style="background-color: #999999; width: 100%;margin: 0;padding: 0;">
+        <tr>
+            <td></td>
+            <td class="header container" style="display: block !important;max-width: 600px !important;margin: 0 auto !important;clear: both !important;">
+
+                <div style="padding: 15px;max-width: 600px;margin: 0 auto;display: block;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td><img src="@ConfigurationManager.AppSettings["MyDomain"]@xml.loadline("siteSetting/logo")" /></td>
+                            <td align="right"><h6 style="font-weight: 900;font-size: 14px;text-transform: uppercase;color: #444;">@xml.loadline("siteSetting/siteName")</h6></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </td>
+            <td></td>
+        </tr>
+    </table><!-- /HEADER -->
+    <!-- BODY -->
+    <table style="width: 100%;">
+        <tr>
+            <td></td>
+            <td class="container" bgcolor="#FFFFFF">
+
+                <div style="padding: 15px;max-width: 600px;margin: 0 auto;display: block;">
+                    <table>
+                        <tr>
+                            <td>
+                                <div style="padding: 5px 0">
+                                    @Html.Raw(Model.Body)
+                                </div>
+                                <table style="background-color: #ebebeb;" width="100%">
+                                    <tr>
+                                        <td>
+
+                                            <!-- column 1 -->
+                                            <table style="width: 280px;min-width: 279px;float: left;" class="column">
+                                                <tr>
+                                                    <td style="padding: 15px;">
+
+                                                        <h5 style="font-weight: 900;font-size: 17px;line-height: 1.1;margin-bottom: 15px;color: #000;">ارتباط با ما :</h5>
+                                                        <p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;">
+                                                            <a href="@xml.loadline("contact/FaceBook")" style="padding: 3px 7px;font-size: 12px;margin-bottom: 10px;text-decoration: none;color: #FFF;font-weight: bold;display: block;text-align: center;background-color: #3B5998 !important;line-height: 1.6;">فیس بوک</a>
+                                                            <a href="@xml.loadline("contact/Telegram")" style="padding: 3px 7px;font-size: 12px;margin-bottom: 10px;text-decoration: none;color: #FFF;font-weight: bold;display: block;text-align: center;background-color: #1daced !important;line-height: 1.6;">تلگرام</a>
+                                                            <a href="@xml.loadline("contact/Aparat")" style="padding: 3px 7px;font-size: 12px;margin-bottom: 10px;text-decoration: none;color: #FFF;font-weight: bold;display: block;text-align: center;background-color: #DB4A39 !important;line-height: 1.6;">آپارات</a>
+                                                            <a href="@xml.loadline("contact/Instagram")" style="padding: 3px 7px;font-size: 12px;margin-bottom: 10px;text-decoration: none;color: #FFF;font-weight: bold;display: block;text-align: center;background-color: #CC0750  !important;line-height: 1.6;">اینستاگرام</a>
+                                                        </p>
+
+
+                                                    </td>
+                                                </tr>
+                                            </table><!-- /column 1 -->
+                                            <!-- column 2 -->
+                                            <table style="width: 280px;min-width: 279px;float: left;">
+                                                <tr>
+                                                    <td style="padding: 15px;">
+
+                                                        <h5 style="font-weight: 900;font-size: 17px;line-height: 1.1;margin-bottom: 15px;color: #000;">تماس با ما : </h5>
+                                                        <p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;">
+                                                            شماره تماس : <strong>@xml.loadline("contact/Phone")</strong><br />
+                                                            ایمیل : <strong><a href="@xml.loadline("contact/email")">@xml.loadline("contact/email")</a></strong>
+                                                        </p>
+
+                                                    </td>
+                                                </tr>
+                                            </table><!-- /column 2 -->
+
+                                            <span class="clear"></span>
+
+                                        </td>
+                                    </tr>
+                                </table><!-- /social & contact -->
+
+                            </td>
+                        </tr>
+                    </table>
+                </div><!-- /content -->
+
+            </td>
+            <td></td>
+        </tr>
+    </table><!-- /BODY -->
+    <!-- FOOTER -->
+    <table style="width: 100%;clear: both !important;">
+        <tr>
+            <td></td>
+            <td class="container">
+
+                <!-- content -->
+                <div style="padding: 15px;max-width: 600px;margin: 0 auto;display: block;">
+                    <table>
+                        <tr>
+                            <td align="center" style="align-content: center">
+                                <p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;">
+
+                                    <a href="@ConfigurationManager.AppSettings["MyDomain"]DeactiveNewsLetter/@Model.DeActiveCode"><unsubscribe>لغو اشتراک</unsubscribe></a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div><!-- /content -->
+
+            </td>
+            <td></td>
+        </tr>
+    </table><!-- /FOOTER -->
+
+</div>
+

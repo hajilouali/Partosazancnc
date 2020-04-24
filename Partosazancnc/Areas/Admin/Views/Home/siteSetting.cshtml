@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "تنظیمات سایت";
+}
+@if (ViewBag.succrssm == true)
+{
+    <div class="alert alert-success">
+        <p>اطلاعات با موفقیت ذخیره گردید</p>
+    </div>
+}
+<div class="tabs white nomargin-top ">
+    <ul class="nav nav-tabs tabs-primary">
+        <li class="active">
+            <a href="#overview" data-toggle="tab">اطلاعات سایت </a>
+        </li>
+        <li>
+            <a href="#contactus" data-toggle="tab">اطلاعات تماس با</a>
+        </li>
+        <li>
+            <a href="#social" data-toggle="tab">اطلاعات شبکه های مجازی</a>
+        </li>
+        <li>
+            <a href="#Email" data-toggle="tab">تنظیمات ایمیل </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- Overview -->
+        <div id="overview" class="tab-pane active">
+            
+            <div id="Overview_Content">
+
+            </div>
+
+        </div>
+
+        <!-- contactus -->
+        <div id="contactus" class="tab-pane">
+
+            @Html.Action("contactus")
+
+        </div>
+
+        <!--social-->
+        <div id="social" class="tab-pane">
+
+            @Html.Action("social")
+
+        </div>
+        <!--Email-->
+        <div id="Email" class="tab-pane">
+            @Html.Action("EmailSetting")
+
+
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(function () {
+            LoadOverView();
+        });
+        function LoadOverView() {
+            $.get("/Admin/Home/Overview",
+                function(resolt) {
+                    $("#Overview_Content").html(resolt);
+                });
+        };
+    </script>
+}

@@ -1,0 +1,81 @@
+﻿@model Partosazancnc.Models.ViewModels.EmailSettingViewModel
+
+@using (Ajax.BeginForm("Emailsettingsave", new AjaxOptions()
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "resultEmail",
+    OnComplete = "successEmail",
+    OnBegin = "clearEmail",
+    LoadingElementId = "loadingEmail",
+    LoadingElementDuration = 1000
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailHost, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailHost, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailHost, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailUserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailUserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailUserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailPort, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailPort, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailPort, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="alertdivEmail">
+            <p id="resultEmail"></p>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    function successEmail() {
+        var result = $("#resultEmail").html();
+        if (result.toLowerCase() == 'true') {
+            $("#resultEmail").html('اطلاعات با موفقیت ذخیره شد');
+            $("#alertdivEmail").addClass("alert alert-success");
+        } else {
+            $("#resultEmail").html('خطا در ذخیره سازی اطلاعات ');
+            $("#alertdivEmail").addClass("alert alert-danger");
+        }
+        $("#alertdivEmail").fadeTo(2000, 500).slideUp(500, function () {
+            $("#alertdivEmail").slideUp(500);
+        });
+    }
+    function clearEmail() {
+        $("#alertdivEmail").removeClass();
+    }
+</script>

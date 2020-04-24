@@ -1,0 +1,87 @@
+﻿@model Partosazancnc.Models.ViewModels.socialViewModel
+
+
+
+@using (Ajax.BeginForm("socialsave", new AjaxOptions()
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "resultSocial",
+    OnComplete = "successSocial",
+    OnBegin = "clearSocial",
+    LoadingElementId = "loadingSocial",
+    LoadingElementDuration = 1000
+   
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Instagram, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Instagram, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Instagram, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telegram, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Telegram, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Telegram, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FaceBook, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FaceBook, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FaceBook, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Aparat, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Aparat, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Aparat, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="spinner-border" role="status" id="loadingSocial">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="alertdivSocial">
+            <p id="resultSocial"></p>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<script>
+    function successSocial() {
+        var result = $("#resultSocial").html();
+        if (result.toLowerCase() == 'true') {
+            $("#resultSocial").html('اطلاعات با موفقیت ذخیره شد');
+            $("#alertdivSocial").addClass("alert alert-success");
+        } else {
+            $("#resultSocial").html('خطا در ذخیره سازی اطلاعات ');
+            $("#alertdivSocial").addClass("alert alert-danger");
+        }
+        $("#alertdivSocial").fadeTo(2000, 500).slideUp(500, function () {
+            $("#alertdivSocial").slideUp(500);
+        });
+    }
+    function clearSocial() {
+        $("#alertdivSocial").removeClass();
+    }
+</script>
+

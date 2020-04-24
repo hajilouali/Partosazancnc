@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Partosazancnc.Models.NewsLettersMail>
+    <div id="cooooooo">
+        <p>
+            <button class="btn btn-success" onclick="getValuePublish()" data-dismiss="modal">اضافه به لیست</button>
+
+        </p>
+        <table class="table">
+            <tr>
+                <th><input type="checkbox" onchange="cksAll()" id="cksAll" /></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmitTime)
+                </th>
+
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr id="addrow_@item.NewsLettersMailID">
+                    <td>
+                        <input type="checkbox" class="chk" value="@item.NewsLettersMailID" />
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @item.SubmitTime.ToString("yyyy/MM/dd")
+                    </td>
+
+
+                </tr>
+            }
+
+        </table>
+        <div class="text-center margin-top-20 pageing">
+            @if (ViewBag.PageCount > 1)
+            {
+                <ul class="pagination">
+                    @if (ViewBag.pageId > 1)
+                    {
+                        <li><button class="btn btn-success" onclick="pageid(@(ViewBag.pageId-1))">قبلی</button></li>
+                    }
+                    else
+                    {
+                        <li class="disabled"><button class="btn btn-primary">قبلی</button></li>
+
+                    }
+                    @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+                    {
+                        if (ViewBag.pageId == i)
+                        {
+                            <li class="active"><button class="btn btn-primary">@i</button></li>
+                        }
+                        else
+                        {
+                            <li><button class="btn btn-success" onclick="pageid(@i)">@i</button></li>
+                        }
+                    }
+                    @if (ViewBag.pageId < ViewBag.PageCount)
+                    {
+                        <li><button class="btn btn-success" onclick="pageid(@(ViewBag.pageId+1))">بعدی</button></li>
+                    }
+                    else
+                    {
+                        <li class="disabled"><button class="btn btn-primary">بعدی</button></li>
+                    }
+
+
+                </ul>
+            }
+
+        </div>
+    </div>
+
+
+<script>
+    function pageid(id) {
+        //$("#myModal").hide();
+        //$(".modal-backdrop").hide();
+        
+        $.get("/Admin/NewsLetter/addMembertolist?id=" + @ViewBag.idlist+"&pageId="+id,
+            function (result) {
+                $("#cooooooo").html(result);
+                //$("#myModalLabel").html('افزودن به لیست');
+                //$("#modalbody").html(result);
+                //$("#myModal").show();
+
+            });
+    }
+</script>

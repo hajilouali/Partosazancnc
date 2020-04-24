@@ -1,0 +1,90 @@
+﻿@model Partosazancnc.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductType.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductType.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Users.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Users.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortDiscription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShortDiscription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PicThumbnail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PicThumbnail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.KeyWord)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KeyWord)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vaziaat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vaziaat)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

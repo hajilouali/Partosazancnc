@@ -1,0 +1,31 @@
+﻿@using DoormatSite.Tools
+@using Tools
+
+@if (User.Identity.IsAuthenticated)
+{
+    MyCMSRollProvider m=new MyCMSRollProvider();
+    <ul class="top-links list-inline pull-right">
+        <li class="text-welcome hidden-xs">به @xml.loadline("siteSetting/siteName") خوش آمدید ،<strong> @User.Identity.Name</strong></li>
+        <li>
+            <a class="dropdown-toggle no-text-underline" data-toggle="dropdown" href="#"><i class="fa fa-user hidden-xs"></i> حساب من</a>
+            <ul class="dropdown-menu pull-right">
+                <li class="divider"></li>
+                @if (m.IsUserInRole(User.Identity.Name,"Admin"))
+                {
+                    <li><a tabindex="-1" href="/Admin/"><i class="fa fa-dashboard"></i> داشبود</a></li>
+                }
+                <li><a tabindex="-1" href="/userpanel/account/ChangeInfo"><i class="fa fa-info"></i> تنظیمات اکانت</a></li>
+                <li><a tabindex="-1" href="/userpanel/account/changepassword"><i class="fa fa-lock"></i> تغییر رمز عبور</a></li>
+                <li class="divider"></li>
+                <li><a tabindex="-1" href="/Account/LogOff"><i class="glyphicon glyphicon-off"></i> خروج</a></li>
+            </ul>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="top-links list-inline pull-right">
+        <li class="hidden-xs"><a href="/Login">ورود</a></li>
+        <li class="hidden-xs"><a href="/Register">ثبت نام</a></li>
+    </ul>
+}

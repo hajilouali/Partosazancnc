@@ -1,0 +1,92 @@
+﻿@using System.Configuration
+@model IEnumerable<Partosazancnc.Models.ViewModels.SearchViewModel>
+@{
+    ViewBag.Title = "نتایج جستجو";
+}
+
+<section class="page-header">
+    <div class="container">
+
+        <h1>نتایج جستجو</h1>
+
+        <!-- breadcrumbs -->
+        <ol class="breadcrumb">
+            <li><a href="/">خانه</a></li>
+            <li class="active"> جستجو</li>
+            <li class="active">@ViewBag.search</li>
+        </ol><!-- /breadcrumbs -->
+
+    </div>
+</section>
+<section>
+    <input type="hidden" value="@ViewBag.search" id="searchid"/>
+    <div class="container">
+
+        <!-- SEARCH RESULTS -->
+        @foreach (var item in Model)
+        {
+            <div class="clearfix search-result">
+                <!-- item -->
+                <h4 class="margin-bottom-0"><a href="@item.SearchURL">@item.SearchTitle</a></h4>
+                <small class="text-success">@ConfigurationManager.AppSettings["MyDomain"]@item.SearchURL</small>
+                <p>@item.ShortDiscription</p>
+            </div><!-- /item -->
+        }
+
+
+
+        <!-- /SEARCH RESULTS -->
+        <!-- PAGINATION -->
+        <div class="text-center">
+            @if (ViewBag.PageCount > 1)
+            {
+                <ul class="pagination">
+                    @if (ViewBag.pageId > 1)
+                    {
+                        <li><a onclick="pageid(@(ViewBag.pageId - 1))">قبلی</a></li>
+                    }
+                    else
+                    {
+                        <li class="disabled"><a>قبلی</a></li>
+
+                    }
+                    @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+                    {
+                        if (ViewBag.pageId == i)
+                        {
+                            <li class="active"><a>@i</a></li>
+                        }
+                        else
+                        {
+                            <li><a onclick="pageid(@i)">@i</a></li>
+                        }
+                    }
+                    @if (ViewBag.pageId < ViewBag.PageCount)
+                    {
+                        <li><a onclick="pageid(@(ViewBag.pageId + 1))">بعدی</a></li>
+                    }
+                    else
+                    {
+                        <li class="disabled"><a>بعدی</a></li>
+                    }
+
+
+                </ul>
+            }
+
+        </div>
+        <!-- /PAGINATION -->
+
+
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        function pageid(id) {
+            var ProductCategory = $("#searchid").val();
+            window.open("/Search?pageid=" + id + "&?Search=" + ProductCategory );
+        }
+    </script>
+}

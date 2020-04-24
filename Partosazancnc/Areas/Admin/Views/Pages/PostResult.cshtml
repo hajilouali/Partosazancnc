@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Partosazancnc.Models.Pages>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PageTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserID)
+        </th>
+
+       
+        <th>
+            @Html.DisplayNameFor(model => model.KeyWord)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Vaziaat)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr id="item_@item.PageID">
+            <td>
+                @Html.DisplayFor(modelItem => item.PageTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Users.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KeyWord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vaziaat)
+            </td>
+            <td>
+                <a href="/Admin/pages/Edit/@item.PageID" class="btn btn-success btn-xs white" ><i class="fa fa-edit"></i> ویرایش</a> |
+                <a onclick="deleterow(@item.PageID)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="text-center margin-top-20">
+    @if (ViewBag.PageCount > 1)
+    {
+        <ul class="pagination">
+            @if (ViewBag.pageId > 1)
+            {
+                <li><a onclick="pageid(@(ViewBag.pageId-1))">قبلی</a></li>
+            }
+            else
+            {
+                <li class="disabled"><a href="#">قبلی</a></li>
+
+            }
+            @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+            {
+                if (ViewBag.pageId == i)
+                {
+                    <li class="active"><a href="">@i</a></li>
+                }
+                else
+                {
+                    <li><a onclick="pageid(@i)">@i</a></li>
+                }
+            }
+            @if (ViewBag.pageId < ViewBag.PageCount)
+            {
+                <li><a onclick="pageid(@(ViewBag.pageId+1))">بعدی</a></li>
+            }
+            else
+            {
+                <li class="disabled"><a href="#">بعدی</a></li>
+            }
+
+
+        </ul>
+    }
+
+</div>
+
+
+<script>
+
+    function pageid(id) {
+        var title = $("#Titlefilter").val();
+        $.get("/Admin/pages/PostResult?Title=" + title + "&pageId=" + id,
+            function (result) {
+                $("#contentpost").html(result);
+            });
+
+    };
+</script>

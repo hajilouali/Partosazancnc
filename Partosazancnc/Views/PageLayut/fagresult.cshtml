@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Partosazancnc.Models.Faqs>
+@{
+    List<string> menulist = ViewBag.category as List<string>;
+    int i = 0;
+}
+
+<!-- FILTER -->
+<ul class="nav nav-pills mix-filter margin-bottom-30">
+    <li data-filter="all" class="filter active"><a href="#">همه </a></li>
+    @foreach (var item in menulist)
+    {
+        <li data-filter="item_@item.Length" class="filter"><a href="#">@item</a></li>
+
+    }
+</ul>
+<!-- /FILTER -->
+
+<div class="row mix-grid">
+
+    <!-- LEFT COLUMNS -->
+    <div class="col-md-9">
+
+        <!-- TOGGLES -->
+        <div class="toggle toggle-transparent toggle-bordered-simple">
+            @foreach (var item in Model)
+            {
+
+                <div class="toggle mix item_@item.ProductType.Title.Length">
+                    <!-- toggle -->
+                    <label> @(i += 1). @item.FaqsTitle</label>
+                    <div class="toggle-content">
+                        <p class="clearfix">@Html.Raw(item.FaqsDiscription)</p>
+                    </div>
+                </div><!-- /toggle -->
+            }
+        </div>
+        <!-- /TOGGLES -->
+
+
+    </div>
+    <!-- /LEFT COLUMNS -->
+    <!-- RIGHT COLUMNS -->
+    <div class="col-md-3">
+        
+        <!-- ASK A QUSTION -->
+        @Html.Action("UserFags")
+
+
+        <!-- /RIGHT COLUMNS -->
+
+    </div>
+</div>

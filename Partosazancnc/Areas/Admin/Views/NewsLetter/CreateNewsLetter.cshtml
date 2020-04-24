@@ -1,0 +1,262 @@
+﻿@model Partosazancnc.Models.NewsLetters
+
+@{
+    ViewBag.Title = "خبرنامه جدید";
+}
+@section Css
+{
+   
+}
+
+@using (Html.BeginForm("CreateNewsLetter", "NewsLetter", new { }, FormMethod.Post, new { id = "target" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsLetterBody, htmlAttributes: new { @class = " col-md-12" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.NewsLetterBody, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NewsLetterBody, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class=" col-md-12">انتخاب نوع ارسال </label>
+                <div class="col-md-12">
+                    <select id="ckselect" class="form-control" onchange="chois()">
+                        <option value="3">هم اکنون ارسال کن  </option>
+                        <option value="1">انتخاب زمان ارسال </option>
+                        <option value="2">ارسال به صورت برنامه زمانی </option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsLetterListId, htmlAttributes: new { @class = "1 col-md-12" })
+                <div class="col-md-12">
+                    @Html.DropDownList("NewsLetterListId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.NewsLetterListId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div id="Timesend">
+                <div class="form-group" id="datesss">
+                    <label class=" col-md-12">تاریخ : </label>
+                    <div class="col-md-12">
+                        <input type="text" name="datesend" class="form-control" id="date1" />
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group" id="daysebd">
+                <label class="control-label col-md-4">انتخاب کنید :</label>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input id="monthly" class="checkbox checkbox-inline" type="checkbox" name="ckselect" value="monthly"> هر ماه<br>
+                            <input id="weekly" class="checkbox checkbox-inline" type="checkbox" value="weekly"> هر هفته<br>
+                            <input id="dayly" class="checkbox checkbox-inline" type="checkbox" name="ckselect" value="dayly"> هر روز<br>
+
+                        </div>
+                        <div class="col-md-6" id="daysss">
+                            <input class="checkbox checkbox-inline daysss" id="Saturday" type="checkbox" name="ckselect" value="saturday"> شنبه<br>
+                            <input class="checkbox checkbox-inline daysss" id="Sunday" type="checkbox" name="ckselect" value="sunday"> یکشنبه<br>
+                            <input class="checkbox checkbox-inline daysss" id="Monday" type="checkbox" name="ckselect" value="monday"> دوشنبه <br>
+                            <input class="checkbox checkbox-inline daysss" id="Tuesday" type="checkbox" name="ckselect" value="tuesday"> سه شنبه<br>
+                            <input class="checkbox checkbox-inline daysss" id="Wednesday" type="checkbox" name="ckselect" value="wednesday"> چهار شنبه<br>
+                            <input class="checkbox checkbox-inline daysss" id="Thursday" type="checkbox" name="ckselect" value="thursday"> پنج شنبه <br>
+                            <input class="checkbox checkbox-inline daysss" id="Friday" type="checkbox" name="ckselect" value="friday"> جمعه <br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="form-group" id="timesss">
+                <label class=" col-md-12">ساعت : </label>
+                <div class="col-md-12">
+                    <input type="text" id="Time" name="timesend" class="form-control masked" value="" data-format="99:99:99" data-placeholder="_" placeholder="00:00:00">
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <input id="other" value="ذخیره" class="btn btn-success btn-block" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("باز گشت", "Index")
+</div>
+
+@section Scripts
+{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/adapters/jquery.js"></script>
+   
+    <script>
+    $(function () {
+            $('#NewsLetterBody').ckeditor();
+            $('#Timesend').hide();
+            $('#daysebd').hide();
+            $('#timesss').hide();
+            $('#daysss').hide();
+            kamaDatepicker('date1', {
+                nextButtonIcon: "/img/timeir_prev.png"
+                , previousButtonIcon: "/img/timeir_next.png"
+                , forceFarsiDigits: true
+                , gotoToday: true
+                , markToday: true
+                , markHolidays: true
+                , highlightSelectedDay: true
+                , sync: true
+                , pastYearsCount: 0
+                , futureYearsCount: 3
+                , swapNextPrev: true
+            });
+        });
+
+        function chois() {
+            var ckselect = $("#ckselect").val();
+            if (ckselect == '') {
+                alert("لطفا یک گزینه برای  نوع ارسال انتخاب فرمایید");
+
+            }
+            if (ckselect == '1') {
+                $('#Timesend').show();
+                $('#timesss').show();
+                $('#daysebd').hide();
+                $(".checkbox-inline").prop('checked', false);
+                $(".checkbox-inline").prop('checked', false);
+                $("#weekly").prop('disabled', false);
+                $("#dayly").prop('disabled', false);
+                $("#monthly").prop('disabled', false);
+                $("#monthly").prop('disabled', false);
+                $("#Time").val('');
+                $("#date1").val('');
+                $('#daysss').hide();
+            } if (ckselect == '2') {
+                $('#Timesend').hide();
+                $('#daysebd').show();
+                $('#timesss').show();
+                $("#monthly").prop('disabled', false);
+                $("#Time").val('');
+                $('#daysss').hide();
+                $("#date1").val('');
+            } if (ckselect == '3') {
+                $('#Timesend').hide();
+                $('#daysebd').hide();
+                $('#timesss').hide();
+                $(".checkbox-inline").prop('checked', false);
+                $("#weekly").prop('disabled', false);
+                $("#dayly").prop('disabled', false);
+                $("#monthly").prop('disabled', false);
+                $("#Time").val('');
+                $("#date1").val('');
+                $('#daysss').hide();
+            }
+        };
+
+        $('#monthly').change(function () {
+            // this will contain a reference to the checkbox
+            if (this.checked) {
+                $("#weekly").attr("disabled", "disabled");
+                $("#weekly").prop('checked', false);
+                $("#dayly").attr("disabled", "disabled");
+                $("#dayly").prop('checked', false);
+                $('#daysss').hide();
+            } else {
+                $("#weekly").prop('disabled', false);
+                $("#dayly").prop('disabled', false);
+            }
+        });
+        $('#weekly').change(function () {
+            // this will contain a reference to the checkbox
+            if (this.checked) {
+                $("#monthly").attr("disabled", "disabled");
+                $("#monthly").prop('checked', false);
+                $("#dayly").attr("disabled", "disabled");
+                $("#dayly").prop('checked', false);
+                $('#daysss').show();
+            } else {
+                $("#monthly").prop('disabled', false);
+                $("#dayly").prop('disabled', false);
+                $("#Saturday").prop('checked', false);
+                $("#Sunday").prop('checked', false);
+                $("#Monday").prop('checked', false);
+                $("#Tuesday").prop('checked', false);
+                $("#Wednesday").prop('checked', false);
+                $("#Thursday").prop('checked', false);
+                $("#Friday").prop('checked', false);
+                $('#daysss').hide();
+            }
+        });
+        $('#dayly').change(function () {
+            // this will contain a reference to the checkbox
+            if (this.checked) {
+                $("#weekly").attr("disabled", "disabled");
+                $("#weekly").prop('checked', false);
+                $("#monthly").attr("disabled", "disabled");
+                $("#monthly").prop('checked', false);
+                $('#daysss').hide();
+
+
+            } else {
+                $("#weekly").prop('disabled', false);
+                $("#monthly").prop('disabled', false);
+            }
+        });
+        $("#other").click(function () {
+            var ckselect = $("#ckselect").val();
+            if (ckselect == '1') {
+                var date1 = $("#date1").val();
+                var Time = $("#Time").val();
+                if (date1 == '' || Time == '') {
+                    alert('لطفا تاریخ و زمان را مشخص نمایید ...');
+                    return false;
+                }
+            } if (ckselect == '2') {
+                var Time = $("#Time").val();
+                if ($('.checkbox-inline').is(':checked')) {
+                    if (Time == '') {
+                        alert('لطفا ساعت را مشخص نمایید ...');
+                        return false;
+                    }
+                    if ($('#weekly').is(':checked')) {
+
+                        if ($(".daysss").is(":checked")) {
+
+                        } else {
+                            alert('لطفا روز های هفته را مشخص نمایید ...');
+                            return false;
+                        }
+                    }
+
+                } else {
+                    alert('لطفا بازه زمانی را انتخاب نمایید...');
+                    return false;
+                }
+
+            }
+            $("#target").submit();
+        });
+    </script>
+}

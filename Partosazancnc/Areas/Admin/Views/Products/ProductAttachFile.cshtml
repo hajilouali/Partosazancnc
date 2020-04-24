@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Partosazancnc.Models.ProductAttachFile>
+@{
+    ViewBag.Title = "فایل های پیوست";
+}
+
+@if (ViewBag.errorpage == true)
+{
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+        <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> "خطا در بارگذاری اطلاعات "</h3> فرمت های مجاز برای ارسال اطلاعات (zip ,rar ,gig,png  , jpg,pdf,doc,docx) می باشد .
+    </div>
+}
+<h2 class="card-header">فایل های پیوست  <a href="/Admin/Products/">@ViewBag.ProductName</a></h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form action="/Admin/Products/ProductAttachFile" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="ProductID" value="@ViewBag.ProductID" />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class=" col-md-12">عنوان فایل پیوستی</label>
+                            <div class="col-md-10">
+                                <input type="text" required="" name="FileTitle" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class=" col-md-12">فایل </label>
+                            <div class="col-md-10">
+                                <input type="file" required="" name="Fileupl" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="ذخیره" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-hover toggle-circle footable-loaded footable tablet breakpoint">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>عنوان فایل پیوستی</th>
+                            <th>فایل</th>
+                            <th></th>
+                        </tr>
+
+                    </thead>
+                    <tbody class="border border-primary">
+                        @foreach (var item in Model)
+                        {
+                            <tr id="item_@item.ProductAttachFileID">
+                                <td>@item.AttachFileTitle</td>
+                                <td><a href="/img/Products/AttachFiles/@item.FileName" target="_blank">مشاهده</a> </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteRow(@item.ProductAttachFileID)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    function DeleteRow(id) {
+        swal({
+                title: "آیا از پاک کردن این فایل اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.get('/Admin/Products/DeleteAttachFile/' + id,
+                        function () {
+                            $("#item_" + id).hide('slow');
+                            swal("فایل انتخاب شده با موفقیت حذف گردید .",
+                                {
+                                    icon: "success",
+                                    button: "تایید"
+                                });
+                        });
+
+                } else {
+                    swal("دستور حذف متوقف گردید", { button: "تایید" });
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Partosazancnc.Models.LayerSliders>
+@foreach (var item in Model)
+{
+    <div class="tp-caption @item.ClassCostom"
+         data-x="@item.data_x" data-hoffset="@item.data_hoffset"
+         data-y="@item.data_y"
+         @*data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"*@
+         data-speed="@item.data_speed" 
+         data-start="@item.data_start"
+         data-easing="@item.data_easing"
+         data-splitin="@item.data_splitin"
+         data-splitout="@item.data_splitout"
+         data-captionhidden="@item.data_captionhidden"
+         data-elementdelay="@item.data_elementdelay"
+         data-endelementdelay="@item.data_endelementdelay"
+         data-endspeed="@item.data_endspeed"
+         data-endeasing="@item.data_endeasing" style="@item.CostomCss">
+        
+        @Html.Raw(item.LayerText)
+        
+        @if (!string.IsNullOrEmpty(item.LayerImage))
+        {
+            <img src="@item.LayerImage" alt=""/>
+        }
+    </div>
+}

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Partosazancnc.Models.NewsLetterList>
+
+@{
+    ViewBag.Title = "لیست ها";
+}
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body" id="modalbody">
+
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <p>
+        <button onclick="Create()" type="button" class="btn btn-success btn-lg" id="btn-new" data-toggle="modal" data-target="#myModal">
+            لیست جدید
+        </button>
+
+    </p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NewsLetterListTitle)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr id="item_@item.NewsLetterListId">
+        <td>
+            @Html.DisplayFor(modelItem => item.NewsLetterListTitle)
+        </td>
+        <td>
+            <a onclick="Edit(@item.NewsLetterListId)" class="btn btn-success btn-xs white" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit" ></i> ویرایش</a> |
+            <a href="/Admin/NewsLetter/ListMemmber/@item.NewsLetterListId" class="btn btn-blue btn-xs white"><i class="fa fa-users"></i> اعضاء</a>
+            <a onclick="deleterow(@item.NewsLetterListId)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+        </td>
+    </tr>
+}
+
+</table>
+@section Scripts
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                    title: "آیا از پاک کردن این لیست اطمینان دارید ؟",
+
+                    icon: "warning",
+
+                    buttons: ["خیر", "بله پاک کن"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/NewsLetter/DeleteList/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("لیست انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        function Create() {
+            $.get("/Admin/NewsLetter/CreateList",
+                function (result) {
+                    $("#myModalLabel").html('دسته بندی جدید');
+                    $("#modalbody").html(result);
+                });
+        }
+        function Edit(id) {
+            $.get("/Admin/NewsLetter/EditList/" + id,
+                function (result) {
+                    $("#myModalLabel").html('ویرایش دسته بندی ');
+                    $("#modalbody").html(result);
+                });
+        }
+    </script>
+}

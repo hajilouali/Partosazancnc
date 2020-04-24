@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Partosazancnc.Models.Menu>
+<div id="header" class="sticky shadow-after-3 clearfix">
+
+    <!-- TOP NAV -->
+    <header id="topNav">
+        <div class="container">
+
+            <!-- Mobile Menu Button -->
+            <button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- BUTTONS -->
+            <ul class="pull-right nav nav-pills nav-second-main">
+
+                <!-- SEARCH -->
+                <li class="search">
+                    <a href="javascript:;">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <div class="search-box">
+                        <form action="/Search" method="get">
+                            <div class="input-group">
+                                <input type="text" name="Search" placeholder="تایپ کنید ..." class="form-control" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">جستجو</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+                <!-- /SEARCH -->
+
+
+            </ul>
+            <!-- /BUTTONS -->
+            <!-- Logo -->
+            <a class="logo pull-left" href="/">
+                <img src="/img/@ViewBag.Logo" alt="Logo" />
+            </a>
+            <div class="navbar-collapse pull-left nav-main-collapse collapse submenu-dark">
+                <nav class="nav-main">
+
+                    <ul id="topMain" class="nav nav-pills nav-main">
+                        @foreach (var item in Model)
+                        {
+                            if (item.ParentID == 0)
+                            {
+                                <li class="dropdown">
+                                    @if (Model.Where(p => p.ParentID == item.MenusID).Any())
+                                    {
+                                        <a class="dropdown" href="@item.URL">
+                                            @item.MenuTitle
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @foreach (var i in Model.Where(s => s.ParentID == item.MenusID))
+                                            {
+                                                <li><a href="@i.URL">@i.MenuTitle</a></li>
+                                            }
+
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <a class="" href="@item.URL">
+                                            @item.MenuTitle
+                                        </a>
+                                    }
+
+                                </li>
+                            }
+                        }
+
+                        <li class="dropdown">
+
+
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- /Top Nav -->
+</div>

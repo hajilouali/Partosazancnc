@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Partosazancnc.Models.ProductProperty>
+@{
+    ViewBag.Title = "ویژگی های محصول";
+}
+
+
+
+<h2 class="card-header">ویژگی های محصول  <a href="/Admin/Products/">@ViewBag.ProductName</a></h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form action="/Admin/Products/ProductProperty" method="post">
+                    <input type="hidden" name="ProductID" value="@ViewBag.ProductID" />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class=" col-md-12">عنوان </label>
+                            <div class="col-md-10">
+                                <input maxlength="150" type="text" required="" name="Title" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class=" col-md-12">متن </label>
+                            <div class="col-md-10">
+                                <input type="text" required="" name="value" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="ذخیره" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-hover toggle-circle footable-loaded footable tablet breakpoint">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>عنوان فایل پیوستی</th>
+                            <th>فایل</th>
+                            <th></th>
+                        </tr>
+
+                    </thead>
+                    <tbody class="border border-primary">
+                        @foreach (var item in Model)
+                        {
+                            <tr id="item_@item.ProductPropertyID">
+                                <td>@item.Title</td>
+                                <td>@item.value </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteRow(@item.ProductPropertyID)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    function DeleteRow(id) {
+        swal({
+                title: "آیا از پاک کردن این ویژگی اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.get('/Admin/Products/DeleteProductProperty/' + id,
+                        function () {
+                            $("#item_" + id).hide('slow');
+                            swal("ویژگی انتخاب شده با موفقیت حذف گردید .",
+                                {
+                                    icon: "success",
+                                    button: "تایید"
+                                });
+                        });
+
+                } else {
+                    swal("دستور حذف متوقف گردید", { button: "تایید" });
+                }
+            });
+        }
+    </script>
+}
+

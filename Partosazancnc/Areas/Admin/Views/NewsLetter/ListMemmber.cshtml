@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "مدیریت اعضاء لیست " + '"' + @ViewBag.listtitle + '"';
+}
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" id="modalbody">
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<p>
+    <button onclick="Create()" type="button" class="btn btn-success " id="btn-new" data-toggle="modal" data-target="#myModal">
+        افزودن به لیست
+    </button>
+    <button onclick="getValueDelete()" type="button" class="btn btn-danger " id="btn-new">
+        حذف از  لیست
+    </button>
+
+</p>
+<input type="hidden" id="ContentId" value="@ViewBag.id" />
+<fieldset>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="profileFirstName">فیلتر  برگه ها</label>
+        <div class="col-md-12">
+            <input type="text" class="form-control" id="Titlefilter">
+        </div>
+    </div>
+</fieldset>
+<div class="form-group margin-top-10">
+    <div id="contentpost" class="">
+
+    </div>
+
+</div>
+
+@Html.ActionLink("بازکشت به لیست ها ", "Lists")
+
+
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        $(function() {
+            updatecontet();
+        });
+        $("#Titlefilter").on('input',
+            function() {
+                updatecontet();
+            });
+
+        function updatecontet() {
+            var titlevalue = $("#Titlefilter").val();
+            var ContentId = $("#ContentId").val();
+            $.get("/Admin/NewsLetter/ListMemmberResult?Title=" + titlevalue + "&id=" + ContentId,
+                function(result) {
+
+                    $("#contentpost").html(result);
+                });
+        };
+
+        function Create() {
+            $.get("/Admin/NewsLetter/addMembertolist?id=" + @ViewBag.id,
+                function(result) {
+                    $("#myModalLabel").html('افزودن به لیست');
+                    $("#modalbody").html(result);
+                });
+    }
+        function deleterow(id) {
+            swal({
+                    title: "آیا از حذف این عضو در این لیست اطمینان دارید ؟",
+
+                    icon: "warning",
+
+                    buttons: ["خیر", "بله حذف کن"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/NewsLetter/removeMember?mail=' + id+"&list="+@ViewBag.id,
+                            function() {
+                                $("#addrow_" + id).hide('slow');
+                                swal("عضو انتخاب شده از لیست مورد نظر با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        ///ssss/
+        function cksAll() {
+            if ($("#cksAll").is(':checked')) {
+                $(".chk").prop("checked", true);
+            } else {
+                $(".chk").prop("checked", false);
+            }
+        }
+        function cksAllmember() {
+            if ($("#cksAllmember").is(':checked')) {
+                $(".chkmember").prop("checked", true);
+            } else {
+                $(".chkmember").prop("checked", false);
+            }
+        }
+        function getValuePublish() {
+            /* declare an checkbox array */
+            var chkArray = [];
+
+            /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+            $(".chk:checked").each(function() {
+                chkArray.push($(this).val());
+            });
+
+            /* check if there is selected checkboxes, by default the length is 1 as it contains one single comma */
+            if (chkArray.length > 0) {
+                $(chkArray).each(function() {
+                    $.get('/Admin/NewsLetter/AddMembertolistfromlist?id='+@ViewBag.id+"&mail=" + this,
+                        function() {
+                            updatecontet();
+                        });
+                    $(".chk:checked").each(function() {
+                        $(this).prop("checked", false);
+                    });
+
+                    $("#cksAll").prop("checked", false);
+
+                });
+
+            }
+        }
+        function getValueDelete() {
+            /* declare an checkbox array */
+            var chkArray = [];
+
+            /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+            $(".chkmember:checked").each(function () {
+                chkArray.push($(this).val());
+            });
+
+            /* check if there is selected checkboxes, by default the length is 1 as it contains one single comma */
+            if (chkArray.length > 0) {
+                swal({
+                        title: "آیا از حذف عضو های انتخاب شده از لیست مورد نظر اطمینان دارید ؟",
+
+                        icon: "warning",
+
+                        buttons: ["خیر", "بله "],
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $(chkArray).each(function () {
+                                $.get('/Admin/NewsLetter/removeMember?mail=' + this+"&list="+@ViewBag.id,
+                                    function () {
+
+                                    });
+                                $("#addrow_" + this).hide();
+                            });
+                            swal("عضوهای انتخاب شده از لیست مورد نظر حذف گردید .",
+                                {
+                                    icon: "success",
+                                    button: "تایید"
+                                });
+                            $(".chkmember:checked").each(function () {
+                                $(this).prop("checked", false);
+
+                            });
+                            $("#cksAllmember").prop("checked", false);
+                        } else {
+                            swal("دستور متوقف گردید", { button: "تایید" });
+                        }
+                    });
+
+            } else {
+                swal("ردیفی برای حذف انتخاب نشده است",
+                    {
+                        icon: "warning",
+                        button: "تایید"
+                    });
+            }
+        }
+    </script>
+}

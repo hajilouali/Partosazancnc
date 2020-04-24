@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Partosazancnc.Models.NewsLettersMail>
+<table class="table">
+    <tr>
+        <th><input type="checkbox" onchange="cksAll()" id="cksAll" /></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubmitTime)
+        </th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="addrow_@item.NewsLettersMailID">
+            <td>
+                <input type="checkbox" class="chk" value="@item.NewsLettersMailID" />
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @item.SubmitTime.ToString("yyyy/MM/dd")
+            </td>
+
+
+        </tr>
+    }
+
+</table>

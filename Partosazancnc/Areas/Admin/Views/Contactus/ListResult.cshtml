@@ -1,0 +1,109 @@
+﻿@using Partosazancnc.Models
+@model IEnumerable<Partosazancnc.Models.ContactUsMessage>
+
+<table class="table">
+    <tr>
+        <th><input type="checkbox" onchange="cksAll()" id="cksAll" /></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateSend)
+        </th>
+
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+        {
+    <tr id="item_@item.ContactUsID" class="@(item.Vaziaat==Vaziaat.UnReade?"info":"")">
+        <td>
+            <input type="checkbox" class="chk" value="@item.ContactUsID" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @item.Email
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @item.DateSend.ToString("yyyy/MM/dd  ساعت :HH:mm")
+        </td>
+        
+        <td>
+            <a onclick="Edit(@item.ContactUsID)" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal">ارسال پاسخ </a>|
+            <span id="btnitem_@item.ContactUsID">
+
+                @if (item.Vaziaat == Vaziaat.UnReade)
+                        {
+                <a id="itempub_@item.ContactUsID" onclick="PublishComment(@item.ContactUsID)" class="btn btn-success btn-xs ">خوانده شده</a>
+                        }
+                        else
+                        {
+                <a id="itemdraf_@item.ContactUsID" onclick="DraftComment(@item.ContactUsID)" class="btn btn-info btn-xs ">خوانده نشده</a>
+                        }
+            </span>
+
+
+            |
+            <a onclick="DeleteComment(@item.ContactUsID)" class="btn btn-danger btn-xs">حذف</a>
+        </td>
+    </tr>
+        }
+
+</table>
+
+<div class="text-center margin-top-20">
+    @if (ViewBag.PageCount > 1)
+    {
+    <ul class="pagination">
+        @if (ViewBag.pageId > 1)
+            {
+        <li><a onclick="pageid(@(ViewBag.pageId-1))">قبلی</a></li>
+            }
+            else
+            {
+        <li class="disabled"><a href="#">قبلی</a></li>
+
+            }
+        @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+            {
+                if (ViewBag.pageId == i)
+                {
+        <li class="active"><a href="">@i</a></li>
+                }
+                else
+                {
+        <li><a onclick="pageid(@i)">@i</a></li>
+                }
+            }
+        @if (ViewBag.pageId < ViewBag.PageCount)
+            {
+        <li><a onclick="pageid(@(ViewBag.pageId+1))">بعدی</a></li>
+            }
+            else
+            {
+        <li class="disabled"><a href="#">بعدی</a></li>
+            }
+
+
+    </ul>
+    }
+
+</div>

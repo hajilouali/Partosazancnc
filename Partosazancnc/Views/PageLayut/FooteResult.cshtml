@@ -1,0 +1,126 @@
+﻿@using System.Configuration
+@using Partosazancnc.Models.ViewModels
+<footer id="footer">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <!-- Footer Logo -->
+                <img class="footer-logo" src="/img/@ViewBag.Logo" alt="Logofooter" />
+
+                <!-- Small Description -->
+                <p>@ViewBag.AbloutUs</p>
+
+                <!-- Contact Address -->
+                <address>
+                    <ul class="list-unstyled">
+
+                        آدرس های شرکت :
+                        <br>
+                       @ViewBag.Address
+                        <br />
+                        تلفن : @ViewBag.Phone
+                        <br>
+
+
+                        <a href="mailto:@ViewBag.Email">@ViewBag.Email</a>
+                        <br>
+
+                    </ul>
+                </address>
+                <!-- /Contact Address -->
+
+            </div>
+            @{
+                List<PostLinkViewModel> postlinks = ViewBag.postLink as List<PostLinkViewModel>;
+                List<PostLinkViewModel> menulist = ViewBag.MeList as List<PostLinkViewModel>;
+            }
+            <div class="col-md-3">
+
+                <!-- Latest Blog Post -->
+                <h4 class="letter-spacing-1">آخرین اخبار</h4>
+                <ul class="footer-posts list-unstyled">
+                    @foreach (var item in postlinks)
+                    {
+                        <li><a href="@item.Url">@item.PostTitle</a><small>@item.DateTime.ToString("yyyy MMMM dd")</small></li>
+                    }
+                </ul>
+                <!-- /Latest Blog Post -->
+
+            </div>
+
+            <div class="col-md-2">
+
+                <!-- Links -->
+                <h4 class="letter-spacing-1">دسترسی سریع</h4>
+                <ul class="footer-links list-unstyled">
+                    @foreach (var item in menulist)
+                    {
+                        <li><a href="@item.Url">@item.PostTitle</a></li>
+                    }
+
+                </ul>
+                <!-- /Links -->
+
+            </div>
+
+            <div class="col-md-4">
+
+                <!-- Newsletter Form -->
+                <h4 class="letter-spacing-1">خبرنامه @ViewBag.SiteName</h4>
+                <p>برای اطلاع از آخرین اخبار ، مطالب سایت ، میتوانید در خبرنامه ما عضو شوید :)</p>
+
+                <form class="validate" action="/newsletter" method="post" data-success="تبریک ، شما عضو خبرنامه ما شدید!" data-toastr-position="bottom-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <input type="email" id="email" name="email" class="form-control required" placeholder="ایمیل خود را وارد کنید">
+                        <input type="hidden" name="SiteKeyNews" id="SiteKeyNews" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="submit">عضویت</button>
+                        </span>
+                    </div>
+                </form>
+                <!-- /Newsletter Form -->
+                <!-- Social Icons -->
+                <div class="margin-top-20">
+                    <a href="@ViewBag.FaceBook" class="social-icon social-icon-border social-facebook pull-left" data-toggle="tooltip" data-placement="top" title="فیسبوک">
+
+                        <i class="icon-facebook"></i>
+                        <i class="icon-facebook"></i>
+                    </a>
+
+                    <a href="@ViewBag.Instagram" class="social-icon social-icon-border social-instagram pull-left" data-toggle="tooltip" data-placement="top" title="اینستاگرام">
+                        <i class="icon-instagram"></i>
+                        <i class="icon-instagram"></i>
+                    </a>
+
+                    <a href="@ViewBag.Telegram" class="social-icon social-icon-border social-linkedin pull-left" data-toggle="tooltip" data-placement="top" title="تلگرام">
+                        <i class="fa fa-send"></i>
+                        <i class="fa fa-send"></i>
+                    </a>
+
+                  
+
+                </div>
+                <!-- /Social Icons -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        <div class="container">
+            <div class="text-center">
+                &copy; تمامی حقوق برای وب سایت @ViewBag.SiteName محفوظ است - 1398
+
+            </div>
+        </div>
+    </div>
+</footer>
+@section Scripts
+{
+   
+}

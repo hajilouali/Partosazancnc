@@ -1,0 +1,124 @@
+﻿@model Partosazancnc.Models.Pages
+
+@{
+    ViewBag.Title = "صفحه جدید";
+}
+
+@section Css
+{
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+}
+
+@using (Html.BeginForm("Create", "Pages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(Model => Model.PageID)
+        @Html.HiddenFor(Model => Model.UserID)
+        @Html.HiddenFor(Model => Model.ImageThumline)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-8">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PageTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PageTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PageTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PageContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PageContent, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PageContent, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PageShortDiscription, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PageShortDiscription, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PageShortDiscription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ImageThumline, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <img src="/img/@Model.ImageThumline" width="150" height="150" class="thumbnail" id="thumbnail"/>
+                            <input type="file" name="img" id="img"/>
+                            @Html.ValidationMessageFor(model => model.ImageThumline, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Vaziaat, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EnumDropDownListFor(model => model.Vaziaat, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Vaziaat, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.KeyWord, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input id="form-tags-1" name="KeyWord" type="text" value="">
+                            <small class="text-muted block">کلمات کلیدی را با کلید Tab از یکدیگر جدا فرمایید</small>
+                            @Html.ValidationMessageFor(model => model.KeyWord, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class=" col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</div>
+
+@section Scripts
+{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/adapters/jquery.js"></script>
+    <script src="~/Scripts/TagsJs.js"></script>
+
+    <script>
+        $(function () {
+            $('#PageContent').ckeditor();
+
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#thumbnail').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#img").change(function () {
+            readURL(this);
+        });
+    </script>
+    <!---->
+
+}

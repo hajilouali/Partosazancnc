@@ -1,0 +1,166 @@
+﻿@using Partosazancnc.Models
+@model IEnumerable<Partosazancnc.Models.Post>
+@{
+    ViewBag.Title = "آرشیو مقالات";
+    ViewBag.Keyword = ViewBag.Sitekeyword;
+    ViewBag.description = ViewBag.sitedescription;
+    List<PostType> listgroups = ViewBag.Groups as List<PostType>;
+}
+
+
+<section class="page-header dark page-header-xs">
+    <div class="container">
+
+        <h1>آرشیو مقالات</h1>
+
+        <!-- breadcrumbs -->
+        <ol class="breadcrumb">
+            <li><a href="#">صفحه اول</a></li>
+            <li class="active">آرشیو مقالات</li>
+        </ol><!-- /breadcrumbs -->
+
+    </div>
+</section>
+<!-- /PAGE HEADER -->
+<!-- -->
+<section>
+    <div class="container">
+
+        <div class="row">
+
+            <!-- LEFT -->
+            <div class="col-md-3 col-sm-3">
+                <ul class="nav nav-tabs nav-bottom-border nav-justified">
+                    <li class="active">
+                        <a href="#tab_1" data-toggle="tab">
+                           فیلتر مقالات
+                        </a>
+                    </li>
+
+                </ul>
+                <!-- INLINE SEARCH -->
+                <div class="inline-search clearfix margin-bottom-30 margin-top-30">
+
+                    <input type="search" placeholder="جستجو در مقالات ..." id="Titlefilterr" name="Titlefilterr" class="input-partosazan">
+                    <button type="button" onclick="SearchFilter()">
+                        <i class="fa fa-search"></i>
+                    </button>
+
+                </div>
+                <!-- /INLINE SEARCH -->
+
+                <hr />
+
+                <!-- side navigation -->
+                <div class="side-nav margin-bottom-60 margin-top-30">
+                    <ul class="nav nav-tabs nav-bottom-border nav-justified">
+                        <li class="active">
+                            <a href="#tab_1" data-toggle="tab">
+                                دسته بندی مقالات
+                            </a>
+                        </li>
+
+                    </ul>
+
+                   
+                    <ul class="list-group list-group-bordered list-group-noicon uppercase margin-top-30">
+                        @foreach (var item in listgroups)
+                        {
+                            <li class="list-group-item"><a onclick="SelectPostGreoup(@item.PostTypeID)"><span class="size-11 text-muted pull-right">(@item.Post.Where(s => s.Vaziaat == Vaziaat.Publish).ToList().Count)</span> @item.Title</a></li>
+                        }
+
+                    </ul>
+                    <!-- /side navigation -->
+
+
+                </div>
+
+
+                <!-- JUSTIFIED TAB -->
+                <div class="tabs nomargin-top hidden-xs margin-bottom-60">
+
+                    <!-- tabs -->
+                    <ul class="nav nav-tabs nav-bottom-border nav-justified">
+                        <li class="active">
+                            <a href="#tab_1" data-toggle="tab">
+                                آخرین مقالات
+                            </a>
+                        </li>
+                       
+                    </ul>
+
+                    <!-- tabs content -->
+                    <div class="tab-content margin-bottom-60 margin-top-30">
+
+                        <!-- POPULAR -->
+                        <div id="tab_1" class="tab-pane active">
+
+                            @Html.Action("LastPost")
+
+                        </div>
+                        <!-- /POPULAR -->
+                        
+
+                    </div>
+
+                </div>
+                <!-- JUSTIFIED TAB -->
+
+
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="col-md-9 col-sm-9">
+                <div id="contentPosts">
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- / -->
+@section Scripts
+{
+    <script>
+        $(function () {
+            $.get("/PostArchiveResult",
+                function (result) {
+                    $("#contentPosts").html(result);
+                });
+        });
+        function pageid(id) {
+            //alert('ssss');
+
+            var title = $("#Titlefilter").val();
+            var GroupId = $("#Groupsid").val();
+            $.get("/PostArchiveResult?pageId=" + id + "&Search=" + title + "&Groupsid=" + GroupId,
+                function (result) {
+                    $("#contentPosts").html(result);
+                });
+
+        };
+
+
+        function SelectPostGreoup(id) {
+            $.get("/PostArchiveResult?Groupsid=" + id,
+                function (result) {
+                    $("#contentPosts").html(result);
+                    $("#Titlefilterr").val('');
+                });
+        }
+        function SearchFilter() {
+            var title = $("#Titlefilterr").val();
+            $.get("/PostArchiveResult?Search=" + title,
+                function (result) {
+                    $("#contentPosts").html(result);
+                });
+        }
+
+    </script>
+}

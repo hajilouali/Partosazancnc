@@ -1,0 +1,183 @@
+﻿
+<aside id="aside">
+
+    <nav id="sideNav">
+        <!-- MAIN MENU -->
+        <ul class="nav nav-list">
+            <li class="">
+                <!-- dashboard -->
+                <a class="dashboard" href="/admin/">
+                    <!-- warning - url used by default by ajax (if eneabled) -->
+                    <i class="main-icon fa fa-dashboard"></i> <span>داشبورد</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon fa fa-object-group"></i> <span>صفحه اول </span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/Home/Sliders">اسلایدر</a></li>
+                    <li><a href="/Admin/Home/CatalogSetting">تنظیمات گاتالوگ</a></li>
+                    <li><a href="/Admin/Brands">مشتریان ما</a></li>
+                    <li><a href="/Admin/Features">قسمت تاریخچه</a></li>
+                    <li><a href="/Admin/Wellcome">قسمت درباره ما</a></li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    @if (ViewBag.contactus != 0)
+                    {
+                        <span class="label label-warning pull-right">@ViewBag.contactus رویداد</span>
+                    }
+                    <i class="main-icon fa fa fa-phone"></i> <span>تماس با ما</span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li>
+                        @if (ViewBag.contactus != 0)
+                        {
+                            <span class="label label-warning pull-right ">@ViewBag.contactus پیغام جدید</span>
+                        }
+                        <a href="/Admin/Contactus/list">پیغام ها</a>
+                    </li>
+
+
+                </ul>
+            </li>
+            <li class="">
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    @if (ViewBag.productPost != 0)
+                    {
+                        <span class="label label-warning pull-right">@ViewBag.productPost رویداد</span>
+                    }
+
+                    <i class="main-icon et-basket"></i> <span> محصولات</span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/Products/Create"> محصول جدید</a></li>
+                    <li><a href="/Admin/Products">مدیریت محصولات</a></li>
+                    <li><a href="/Admin/ProductTypes">دسته بندی ها </a></li>
+                    <li>
+                        @if (ViewBag.productPost != 0)
+                        {
+                            <span class="label label-warning pull-right ">@ViewBag.productPost دیدگاه جدید</span>
+                        }
+
+                        <a href="/Admin/Products/ProductCommentManage">مدیریت نظرات </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    @if (ViewBag.CommetPost != 0)
+                    {
+                        <span class="label label-warning pull-right">@ViewBag.CommetPost رویداد</span>
+                    }
+                    <i class="main-icon et-book-open"></i> <span>مقالات</span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/Posts/Create"> مقاله جدید</a></li>
+                    <li><a href="/Admin/Posts">مدیریت مقالات </a></li>
+                    <li><a href="/Admin/PostTypes">دسته بندی مقالا </a></li>
+                    <li>
+                        @if (ViewBag.CommetPost != 0)
+                        {
+                            <span class="label label-warning pull-right ">@ViewBag.CommetPost دیدگاه جدید</span>
+                        }
+                        <a href="/Admin/Posts/PostCommentManage">مدیریت نظرات</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon glyphicon glyphicon-file"></i> <span>برگه ها</span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/Pages/Create"> برگه جدید</a></li>
+                    <li><a href="/Admin/Pages">مدیریت برگه ها </a></li>
+
+
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon fa fa-users"></i> <span>کاربران</span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/Users">مدیریت کاربران</a></li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    @if (ViewBag.userfaq != 0)
+                    {
+                        <span class="label label-warning pull-right">@ViewBag.userfaq رویداد</span>
+                    }
+                    <i class="main-icon fa fa-commenting-o"></i> <span>سوالات متداول</span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/Faqs/">مدیریت سوالات</a></li>
+
+                    <li>
+                        @if (ViewBag.userfaq != 0)
+                        {
+                            <span class="label label-warning pull-right ">@ViewBag.userfaq سوال جدید</span>
+                        }
+                        <a href="/Admin/Faqs/userfaq">سوالات ارسال شده</a>
+                    </li>
+
+                </ul>
+            </li>
+           
+
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon fa fa-envelope-o"></i> <span>خبر نامه </span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/Admin/newsletter/Emails">بانک ایمیل</a></li>
+                    <li><a href="/Admin/NewsLetter/Lists">تنظیمات لیست </a></li>
+                    <li><a href="/Admin/NewsLetter/CreateNewsLetter">ایجاد خبر نامه </a></li>
+                    <li><a href="/Admin/NewsLetter/">خبر نامه ها </a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon fa fa-gears"></i> <span>تنظیمات </span>
+                </a>
+                <ul>
+                    <!-- submenus -->
+                    <li><a href="/admin/home/siteSetting">اطلاعات پایه</a></li>
+                    <li><a href="/Admin/Menu">تنظیمات منو</a></li>
+                    <li><a href="/Admin/LinkManagers">مدیریت لینک ها</a></li>
+
+                </ul>
+            </li>
+        </ul>
+
+
+
+    </nav>
+
+    <span id="asidebg"><!-- aside fixed background --></span>
+</aside>

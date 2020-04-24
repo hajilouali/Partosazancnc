@@ -1,0 +1,164 @@
+﻿@model Partosazancnc.Models.Post
+
+@{
+    ViewBag.Title = "ویرایش مقاله";
+}
+
+@section Css
+{
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="~/assets/plugins/Persian-Jalali-Calendar-Data-Picker-Plugin-With-jQuery-kamaDatepicker/src/kamadatepicker.min.js"></script>
+    <link href="~/assets/plugins/Persian-Jalali-Calendar-Data-Picker-Plugin-With-jQuery-kamaDatepicker/style/kamadatepicker.min.css" rel="stylesheet" />
+    
+}
+
+
+@using (Html.BeginForm("Edit", "Posts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(Model => Model.PostID)
+        @Html.HiddenFor(Model => Model.PostImage)
+
+        @Html.HiddenFor(Model => Model.UserID)
+
+        <div class="col-md-8">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostTitle, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PostTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PostTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostShortDiscription, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PostShortDiscription, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PostShortDiscription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostText, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PostText, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PostText, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostImage, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            <img src="/img/posts/thum/@Model.PostImage" width="150" height="150" class="thumbnail" id="thumbnail"/>
+                            <input type="file" name="img" id="img"/>
+                            @Html.ValidationMessageFor(model => model.PostImage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostTypeID, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("PostTypeID", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PostTypeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Vaziaat, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EnumDropDownListFor(model => model.Vaziaat, null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Vaziaat, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.KeyWord, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+
+                            <input id="form-tags-1" name="KeyWord" type="text" value="@Model.KeyWord">
+                            <small class="text-muted block">کلمات کلیدی را با کلید Tab از یکدیگر جدا فرمایید</small>
+                            @Html.ValidationMessageFor(model => model.KeyWord, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PostDate, htmlAttributes: new { @class = " col-md-12" })
+                        <div class="col-md-10">
+                            <input type="text" id="PostDate" name="PostDate" value="@Model.PostDate.ToString("yyyy/MM/dd")" class="form-control">
+
+                            @Html.ValidationMessageFor(model => model.PostDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class=" col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-success btn-lg" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("بازگشت", "Index")
+</div>
+
+@section Scripts
+{
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/adapters/jquery.js"></script>
+
+    <script src="~/Scripts/TagsJs.js"></script>
+
+    <script>
+        $(function () {
+            $('#PostText').ckeditor();
+            kamaDatepicker('PostDate', {
+                nextButtonIcon: "/img/timeir_prev.png"
+                , previousButtonIcon: "/img/timeir_next.png"
+                , forceFarsiDigits: true
+                , gotoToday: true
+                , markToday: true
+                , markHolidays: true
+                , highlightSelectedDay: true
+                , sync: true
+                , pastYearsCount: 0
+                , futureYearsCount: 3
+                , swapNextPrev: true
+            });
+        });
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#thumbnail').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#img").change(function () {
+            readURL(this);
+        });
+    </script>
+
+
+}

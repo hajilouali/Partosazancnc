@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Partosazancnc.Models.LayerSliders>
+
+@{
+    ViewBag.Title = " لایه ها";
+}
+@section Css
+{
+   
+}
+@section Scripts
+{
+   
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                    title: "آیا از پاک کردن این لایه اطمینان دارید ؟",
+
+                    icon: "warning",
+
+                    buttons: ["خیر", "بله پاک کن"],
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Home/DeleteLayer/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("لایه انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+       
+    </script>
+}
+
+
+<p>
+    @Html.ActionLink("لایه جدید", "AddLayerToSlider",new {id =ViewBag.SliderId},new{@class="btn btn-success"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Sliders.SliderTitle)
+        </th>
+        <th>
+            محتوای لایه
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="item_@item.LayerID">
+            <td>
+                @Html.DisplayFor(modelItem => item.Sliders.SliderTitle)
+            </td>
+            @if (!string.IsNullOrEmpty(item.LayerImage))
+            {
+                <td>
+                    <img src="@item.LayerImage" width="250" />
+                </td>
+            }
+            @if (!string.IsNullOrEmpty(item.LayerText))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.LayerText)
+                </td>
+            }
+
+
+            <td>
+                <a href="/Admin/Home/EditLayerToSlider/@item.LayerID" class="btn btn-success btn-xs white" ><i class="fa fa-edit"></i> ویرایش</a> |
+                <a onclick="deleterow(@item.LayerID)" class="btn btn-danger btn-xs white"><i class="fa fa-times"></i> حذف</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    @Html.ActionLink("بازگشت", "Sliders")
+</div>
+
+<!-- Ajax Modal >-->
+<div class="text-center">
+    <a class=" btn btn-primary" href="/Admin/Home/SliResult/@ViewBag.SliderId" data-target="#ajax" data-toggle="modal">مشاهده تغیرات</a>
+
+</div>
+<div class=" modal fade" id="ajax" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="text-center">
+                <img src="assets/images/loaders/7.gif" alt="" />
+            </div>
+
+        </div>
+    </div>
+</div>
+

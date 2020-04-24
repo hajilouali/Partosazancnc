@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Partosazancnc.Models.Brands>
+<div class="text-center margin-top-30 margin-bottom-30">
+    <div class="owl-carousel nomargin" data-plugin-options='{"items":6, "singleItem": false, "autoPlay": true}'>
+        @foreach (var item in Model)
+        {
+            <div>
+                <img class="img-responsive" src="/img/@item.Image" alt="@item.BrandName">
+            </div>
+        }
+    </div>
+</div>

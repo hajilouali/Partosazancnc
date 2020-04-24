@@ -1,0 +1,178 @@
+﻿@model Partosazancnc.Models.Sliders
+
+@{
+    ViewBag.Title = "اسلاید جدید";
+}
+
+
+
+@using (Html.BeginForm("CreateSlider","Home",FormMethod.Post,new{enctype="multipart/form-data"})) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SliderTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.SliderTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SliderTitle, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImageSlider, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="text-center">
+                                    <img id="thumbnail" src="/img/nopic.jpg" width="250" height="150" class=" mx-auto d-block" />
+                                </div>
+                                <div class="col-md-12 margin-top-30" >
+                                    <input type="file" name="img" id="img"/>
+                                </div>
+                                
+                                @Html.ValidationMessageFor(model => model.ImageSlider, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SliderDiscription, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.SliderDiscription, new { htmlAttributes = new { @class = "form-control",@rows = 5  } })
+                                @Html.ValidationMessageFor(model => model.SliderDiscription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SliderURL, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.SliderURL, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SliderURL, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CostomCss, htmlAttributes: new { @class = "control-label col-md-2"  })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CostomCss, new { htmlAttributes = new { @class = "form-control" ,@rows = 7} })
+                                @Html.ValidationMessageFor(model => model.CostomCss, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Vaziaat, htmlAttributes: new { @class = " col-md-12" })
+                            <div class="col-md-10">
+                                @Html.EnumDropDownListFor(model => model.Vaziaat, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Vaziaat, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.data_transition, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("data_transition",null, htmlAttributes:new {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.data_transition, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.data_slotamount, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("data_slotamount",null, new   {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.data_slotamount, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.data_masterspeed, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("data_masterspeed",null, new   {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.data_masterspeed, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.data_Delay, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("data_Delay",null, new   {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.data_Delay, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.data_saveperformance, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("data_saveperformance",null, new   {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.data_saveperformance, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Imagedatabgposition, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("Imagedatabgposition",null, new   {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.Imagedatabgposition, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Imagedatabgfit, htmlAttributes: new {@class = " col-md-12"})
+                            <div class="col-md-10">
+                                @Html.DropDownList("Imagedatabgfit",null, new   {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.Imagedatabgfit, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+        
+
+        
+
+        
+
+        <div class="col-md-1"></div>
+            <div class=" col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-success btn-lg btn-block" />
+            </div>
+       
+    </div>
+}
+
+<div class="col-md-12 margin-top-50">
+    @Html.ActionLink("بازگشت به لیست ", "Sliders")
+</div>
+@section Scripts
+{
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#thumbnail').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#img").change(function () {
+            readURL(this);
+        });
+    </script>
+}

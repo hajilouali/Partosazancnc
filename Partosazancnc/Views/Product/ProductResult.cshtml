@@ -1,0 +1,275 @@
+﻿@using System.Configuration
+@using Partosazancnc.Models
+@using Tools
+@using System.IO
+@model Partosazancnc.Models.Product
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.Keyword = Model.KeyWord;
+    ViewBag.description = Model.ShortDiscription;
+    ViewBag.Author = Model.Users.FullName;
+    ViewBag.thumline ="Products/thum/"+ Model.PicThumbnail;
+
+}
+@section Header
+{
+
+    <link href="~/assets/css/layout-shop.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    <script src="~/assets/js/view/demo.shop.js"></script>
+
+    
+}
+<section class="page-header page-header-xs">
+    <div class="container">
+
+        <h1>@Model.Title</h1>
+
+        <!-- breadcrumbs -->
+        <ol class="breadcrumb">
+            <li><a href="/">خانه</a></li>
+            <li><a href="/ProductArchive">آرشیو محصولات</a></li>
+            <li class="active">@Model.Title</li>
+        </ol><!-- /breadcrumbs -->
+
+    </div>
+</section>
+<!-- /PAGE HEADER -->
+<!-- -->
+<section>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-1 "></div>
+            <!-- IMAGE -->
+            <div class="col-lg-4 col-sm-4">
+
+                <div class="thumbnail relative margin-bottom-3">
+
+                    <!--
+                        IMAGE ZOOM
+
+                        data-mode="mouseover|grab|click|toggle"
+                    -->
+                    <figure id="zoom-primary" class="zoom" data-mode="mouseover">
+                        <!--
+                            zoom buttton
+
+                            positions available:
+                                .bottom-right
+                                .bottom-left
+                                .top-right
+                                .top-left
+                        -->
+                        <a class="lightbox bottom-right" href="/img/Products/1000×1500/@Model.PicThumbnail" data-plugin-options='{"type":"image"}'><i class="glyphicon glyphicon-search"></i></a>
+
+                        <!--
+                            image
+
+                            Extra: add .image-bw class to force black and white!
+                        -->
+                        <img class="img-responsive" src="/img/Products/1000×1500/@Model.PicThumbnail" width="1200" height="1500" alt="This is the product title" />
+                    </figure>
+
+                </div>
+
+                <!-- Thumbnails (required height:100px) -->
+                <div data-for="zoom-primary" class="zoom-more owl-carousel owl-padding-3 featured" data-plugin-options='{"singleItem": false, "autoPlay": false, "navigation": true, "pagination": false}'>
+                    @foreach (var item in Model.ProductGallery)
+                    {
+                        <a class="thumbnail active" href="/img/Products/1000×1500/@item.Image">
+                            <img src="/img/Products/1000×1500/@item.Image" height="100" alt="/@item.Title" />
+                        </a>
+                    }
+
+                </div>
+                <!-- /Thumbnails -->
+
+            </div>
+            <!-- /IMAGE -->
+            <!-- ITEM DESC -->
+            <div class="col-lg-6 col-sm-6">
+                <!-- short description -->
+                <p>@Model.ShortDiscription</p>
+                <!-- /short description -->
+                <hr />
+                <!-- Share -->
+                <div class="pull-left">
+
+                    @if (!String.IsNullOrEmpty(Model.KeyWord))
+                    {
+                        foreach (var item in Model.KeyWord.Split(','))
+                        {
+                            <a class="tag">
+                                <span class="txt">@item</span>
+
+                            </a>
+                        }
+                    }
+                </div>
+                <div class="pull-right">
+
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=@ConfigurationManager.AppSettings["MyDomain"]Product/@Model.ProductID" class="social-icon social-icon-sm social-icon-transparent social-facebook pull-left" data-toggle="tooltip" data-placement="top" title="اشتراک در فیس بوک">
+                        <i class="icon-facebook"></i>
+                        <i class="icon-facebook"></i>
+                    </a>
+
+
+
+                    <a href="https://plus.google.com/share?url=@ConfigurationManager.AppSettings["MyDomain"]Product/@Model.ProductID" class="social-icon social-icon-sm social-icon-transparent social-gplus pull-left" data-toggle="tooltip" data-placement="top" title="اشتراک در گوگل پلاس">
+                        <i class="icon-gplus"></i>
+                        <i class="icon-gplus"></i>
+                    </a>
+
+                    <a href="https://t.me/share/url?url=@ConfigurationManager.AppSettings["MyDomain"]Product/@Model.ProductID" class="social-icon social-icon-sm social-icon-transparent social-linkedin pull-left" data-toggle="tooltip" data-placement="top" title="اشتراگ در تلگرام">
+                        <i class="fa fa-send"></i>
+                        <i class="fa fa-send"></i>
+                    </a>
+
+                </div>
+                <!-- /Share -->
+
+
+            </div>
+            <!-- /ITEM DESC -->
+            <div class="col-md-1 "></div>
+
+
+        </div>
+
+
+
+        <ul id="myTab" class="nav nav-tabs nav-top-border margin-top-80" role="tablist">
+            <li role="presentation" class="active"><a href="#description" role="tab" data-toggle="tab">توضیحات </a></li>
+            <li role="presentation"><a href="#specs" role="tab" data-toggle="tab">اطلاعات فنی </a></li>
+            <li role="presentation"><a href="#Attachment" role="tab" data-toggle="tab">ضمائم </a></li>
+            <li role="presentation"><a href="#reviews" role="tab" data-toggle="tab">نظرات (@Model.ProductCommentses.Where(p => p.Vaziaat == Vaziaat.Publish).Count())</a></li>
+        </ul>
+
+
+        <div class="tab-content padding-top-20">
+
+            <!-- DESCRIPTION -->
+            <div role="tabpanel" class="tab-pane fade in active" id="description">
+                @Html.Raw(Model.Text)
+            </div>
+
+            <!-- SPECIFICATIONS -->
+            <div role="tabpanel" class="tab-pane fade" id="specs">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>عنوان </th>
+                                <th>توضیحات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.property as List<ProductProperty>)
+                            {
+                                <tr>
+                                    <td>@item.Title</td>
+                                    <td>@item.value</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Attachment -->
+            <div role="tabpanel" class="tab-pane fade" id="Attachment">
+                <div class="row">
+                    @{
+                        List<ProductAttachFile> downloads = ViewBag.Attachment;
+                    }
+                    @foreach (var item in downloads)
+                    {
+                        <div class="col-md-4" style="padding-top: 15px">
+
+                            <a href="/PageImages/Products/AttachFiles/@item.FileName" target="_blank" class="link col-12" style="display: inline-flex;">
+                                @switch (Path.GetExtension(item.FileName).ToLower())
+                                {
+                                    case ".pdf":
+                                        {
+                                            <i class="fa fa-file-pdf-o fa-5x "></i>
+                                            break;
+                                        }
+                                    case ".doc":
+                                        {
+                                            <i class="fa fa-file-word-o fa-5x "></i>
+                                            break;
+                                        }
+                                    case ".docx":
+                                        {
+                                            <i class="fa fa-file-word-o fa-5x "></i>
+                                            break;
+                                        }
+                                    case ".zip":
+                                        {
+                                            <i class="fa fa-file-archive-o fa-5x "></i>
+                                            break;
+                                        }
+                                    case ".rar":
+                                        {
+                                            <i class="fa fa-file-archive-o fa-5x "></i>
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            <i class="fa fa-file-photo-o fa-5x "></i>
+                                            break;
+                                        }
+                                }
+
+                                <div class="text" style="padding: 15px">
+                                    <strong>@item.AttachFileTitle</strong><br />
+                                    @{
+                                        string fileName = Server.MapPath("/img/Products/AttachFiles/") + item.FileName;
+                                        FileInfo fi = new FileInfo(fileName);
+                                    }
+                                    <span> @FileSizeCalculateor.SizeSuffix(fi.Length) </span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- REVIEWS -->
+            <div role="tabpanel" class="tab-pane fade" id="reviews">
+                <div id="comments" class="comments">
+
+                   
+
+                    <!-- comment item -->
+                    @Html.Action("ProductComments", "Product", new {id = Model.ProductID})
+
+
+                    <h4 class="page-header size-20 margin-bottom-60 margin-top-100">
+                        <span>ارسال نظر</span>
+                    </h4>
+
+                    <!-- Form -->
+                    <div id="comment-reply">
+                        @Html.Action("SendProductCommet", "Product", new {id = Model.ProductID})
+                    </div>
+
+                    <!-- /Form -->
+
+                </div>
+            </div>
+        </div>
+
+
+        <hr class="margin-top-80 margin-bottom-80" />
+
+
+       
+        <!-- /RELATED -->
+
+    </div>
+</section>
+<!-- / -->

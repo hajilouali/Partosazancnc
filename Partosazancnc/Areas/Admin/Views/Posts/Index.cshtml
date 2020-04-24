@@ -1,0 +1,73 @@
+﻿
+
+@{
+    ViewBag.Title = "مقالات";
+}
+
+
+<p>
+    @Html.ActionLink("مقاله جدید", "Create", new { }, new { @class = "btn btn-success" })
+</p>
+<fieldset>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="profileFirstName">فیلتر  مقالات</label>
+        <div class="col-md-12">
+            <input type="text" class="form-control" id="Titlefilter">
+        </div>
+    </div>
+</fieldset>
+<div class="form-group margin-top-10">
+    <div id="contentpost" class="">
+
+    </div>
+
+</div>
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+
+        $(function () {
+            updatecontet();
+        });
+        $("#Titlefilter").on('input',
+            function () {
+                updatecontet();
+            });
+        function updatecontet() {
+            var titlevalue = $("#Titlefilter").val();
+            $.get("/Admin/Posts/PostResult?Title=" + titlevalue,
+                function (result) {
+
+                    $("#contentpost").html(result);
+                });
+        };
+
+        function deleterow(id) {
+            swal({
+                title: "آیا از پاک کردن این مقاله اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/Posts/DeleteConfirmed/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("مقاله انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+    </script>
+}

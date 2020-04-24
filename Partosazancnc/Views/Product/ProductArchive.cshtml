@@ -1,0 +1,332 @@
+﻿@using Partosazancnc.Models
+@model IEnumerable<Partosazancnc.Models.Product>
+@{
+    ViewBag.Title = "آرشیو محصولات ";
+    ViewBag.Keyword = ViewBag.Sitekeyword;
+    ViewBag.description = ViewBag.sitedescription;
+    List<ProductType> mmList = ViewBag.Groups as List<ProductType>;
+}
+@section Header
+{
+
+    <link href="~/assets/css/layout-shop.css" rel="stylesheet" />
+}
+<!--
+    PAGE HEADER
+
+    CLASSES:
+        .page-header-xs	= 20px margins
+        .page-header-md	= 50px margins
+        .page-header-lg	= 80px margins
+        .page-header-xlg= 130px margins
+        .dark			= dark page header
+
+        .shadow-before-1 	= shadow 1 header top
+        .shadow-after-1 	= shadow 1 header bottom
+        .shadow-before-2 	= shadow 2 header top
+        .shadow-after-2 	= shadow 2 header bottom
+        .shadow-before-3 	= shadow 3 header top
+        .shadow-after-3 	= shadow 3 header bottom
+-->
+<section class="page-header page-header-xs">
+    <div class="container">
+
+        <h1>خدمات و محصولات</h1>
+
+        <!-- breadcrumbs -->
+        <ol class="breadcrumb">
+            <li><a href="/">خانه </a></li>
+            <li class="active"> آرشیو خدمات و محصولات</li>
+        </ol><!-- /breadcrumbs -->
+
+    </div>
+</section>
+<!-- /PAGE HEADER -->
+<!-- -->
+<section>
+    <div class="container">
+
+        <div class="row">
+
+            <!-- RIGHT -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-lg-push-3 col-md-push-3 col-sm-push-3">
+
+
+
+                <!-- LIST OPTIONS -->
+                <!-- PAGINATION -->
+                <div class="clearfix shop-list-options margin-bottom-20">
+                    @if (ViewBag.PageCount > 1)
+                    {
+                        <ul class="pagination nomargin pull-right">
+                            @if (ViewBag.pageId > 1)
+                            {
+                                <li><a onclick="pageid(@(ViewBag.pageId-1))">قبلی</a></li>
+                            }
+                            else
+                            {
+                                <li class="disabled"><a>قبلی</a></li>
+
+                            }
+                            @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+                            {
+                                if (ViewBag.pageId == i)
+                                {
+                                    <li class="active"><a>@i</a></li>
+                                }
+                                else
+                                {
+                                    <li><a onclick="pageid(@i)">@i</a></li>
+                                }
+                            }
+                            @if (ViewBag.pageId < ViewBag.PageCount)
+                            {
+                                <li><a onclick="pageid(@(ViewBag.pageId+1))">بعدی</a></li>
+                            }
+                            else
+                            {
+                                <li class="disabled"><a>بعدی</a></li>
+                            }
+
+
+                        </ul>
+                    }
+
+                </div>
+                <!-- /PAGINATION -->
+                <!-- /LIST OPTIONS -->
+
+
+                <ul class="shop-item-list row list-inline nomargin">
+
+                    @foreach (var item in Model)
+                    {
+                        <li class="col-lg-4 col-sm-4">
+                            @Html.Partial("_ProductItemArchive", item)
+                        </li>
+                    }
+
+                </ul>
+
+                <hr />
+                <!-- PAGINATION -->
+                <div class="text-center">
+                    @if (ViewBag.PageCount > 1)
+                    {
+                        <ul class="pagination">
+                            @if (ViewBag.pageId > 1)
+                            {
+                                <li><a onclick="pageid(@(ViewBag.pageId-1))">قبلی</a></li>
+                            }
+                            else
+                            {
+                                <li class="disabled"><a>قبلی</a></li>
+
+                            }
+                            @for (int i = 1; i < ViewBag.PageCount + 1; i++)
+                            {
+                                if (ViewBag.pageId == i)
+                                {
+                                    <li class="active"><a>@i</a></li>
+                                }
+                                else
+                                {
+                                    <li><a onclick="pageid(@i)">@i</a></li>
+                                }
+                            }
+                            @if (ViewBag.pageId < ViewBag.PageCount)
+                            {
+                                <li><a onclick="pageid(@(ViewBag.pageId+1))">بعدی</a></li>
+                            }
+                            else
+                            {
+                                <li class="disabled"><a>بعدی</a></li>
+                            }
+
+
+                        </ul>
+                    }
+
+                </div>
+                <!-- /PAGINATION -->
+
+
+            </div>
+
+
+            <!-- LEFT -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-lg-pull-9 col-md-pull-9 col-sm-pull-9">
+                <input type="hidden" name="pageId" id="pageId" value="@ViewBag.pageId" />
+                <input type="hidden" name="ProductCategory" id="ProductCategory" value="@ViewBag.selectGroup" />
+                <input type="hidden" name="Search" id="Search" value="@ViewBag.productTitle" />
+                <!-- CATEGORIES -->
+                <div class="side-nav margin-bottom-60">
+
+                    <div class="side-nav-head">
+                        <button class="fa fa-bars"></button>
+                        <h4>جستجو </h4>
+                    </div>
+
+                    <input type="text" id="searchTextBox" value="@ViewBag.productTitle" />
+                    <button type="button" onclick="searchonclic()" class="btn btn-sm btn-success">جستو</button>
+                </div>
+                <!-- /CATEGORIES -->
+                <!-- CATEGORIES -->
+                <div class="side-nav margin-bottom-60">
+
+                    <div class="side-nav-head">
+                        <button class="fa fa-bars"></button>
+                        <h4>دسته بندی ها</h4>
+                    </div>
+
+                    <ul class="list-group list-group-bordered list-group-noicon uppercase">
+                        <li class="list-group-item"><a href="/ProductArchive"><span class="size-11 text-muted pull-right"></span>همه</a></li>
+                        @foreach (var items in mmList)
+                        {
+                            <li class="list-group-item"><a href="/ProductArchive?ProductCategory=@items.ProductTypeId"><span class="size-11 text-muted pull-right">(@items.Product.Where(p => p.Vaziaat == Vaziaat.Publish).Count())</span> @items.Title</a></li>
+                        }
+
+
+                    </ul>
+
+                </div>
+                <!-- /CATEGORIES -->
+                <!-- FEATURED -->
+                @*<div class="margin-bottom-60">
+
+                        <h2 class="owl-featured">خدمات پیشنهادی</h2>
+                        <div class="owl-carousel featured" data-plugin-options='{"singleItem": true, "stopOnHover":false, "autoPlay":false, "autoHeight": false, "navigation": true, "pagination": false}'>
+
+                            <div>
+                                <!-- SLIDE 1 -->
+                                <ul class="list-unstyled nomargin nopadding text-left">
+
+                                    <li class="clearfix">
+                                        <!-- item -->
+                                        <div class="thumbnail featured clearfix pull-left">
+                                            <a href="#">
+                                                <img src="/assets/images/demo/shop/products/100x100/p10.jpg" width="80" height="80" alt="featured item">
+                                            </a>
+                                        </div>
+
+                                        <a class="block size-12" href="#">Long Grey Dress - Special</a>
+                                        <div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
+                                        <div class="size-18 text-left">$132.00</div>
+                                    </li><!-- /item -->
+
+                                    <li class="clearfix">
+                                        <!-- item -->
+                                        <div class="thumbnail featured clearfix pull-left">
+                                            <a href="#">
+                                                <img src="/assets/images/demo/shop/products/100x100/p2.jpg" width="80" height="80" alt="featured item">
+                                            </a>
+                                        </div>
+
+                                        <a class="block size-1" href="#">Black Fashion Hat</a>
+                                        <div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
+                                        <div class="size-18 text-left">$65.00</div>
+                                    </li><!-- /item -->
+
+                                    <li class="clearfix">
+                                        <!-- item -->
+                                        <div class="thumbnail featured clearfix pull-left">
+                                            <a href="#">
+                                                <img src="/assets/images/demo/shop/products/100x100/p13.jpg" width="80" height="80" alt="featured item">
+                                            </a>
+                                        </div>
+
+                                        <a class="block size-1" href="#">Cotton 100% - Pink Dress</a>
+                                        <div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
+                                        <div class="size-18 text-left">$77.00</div>
+                                    </li><!-- /item -->
+
+                                </ul>
+                            </div><!-- /SLIDE 1 -->
+
+                            <div>
+                                <!-- SLIDE 2 -->
+                                <ul class="list-unstyled nomargin nopadding text-left">
+
+                                    <li class="clearfix">
+                                        <!-- item -->
+                                        <div class="thumbnail featured clearfix pull-left">
+                                            <a href="#">
+                                                <img src="/assets/images/demo/shop/products/100x100/p12.jpg" width="80" height="80" alt="featured item">
+                                            </a>
+                                        </div>
+
+                                        <a class="block size-12" href="#">Long Grey Dress - Special</a>
+                                        <div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
+                                        <div class="size-18 text-left">$132.00</div>
+                                    </li><!-- /item -->
+
+                                    <li class="clearfix">
+                                        <!-- item -->
+                                        <div class="thumbnail featured clearfix pull-left">
+                                            <a href="#">
+                                                <img src="/assets/images/demo/shop/products/100x100/p6.jpg" width="80" height="80" alt="featured item">
+                                            </a>
+                                        </div>
+
+                                        <a class="block size-1" href="#">Black Fashion Hat</a>
+                                        <div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
+                                        <div class="size-18 text-left">$65.00</div>
+                                    </li><!-- /item -->
+
+                                    <li class="clearfix">
+                                        <!-- item -->
+                                        <div class="thumbnail featured clearfix pull-left">
+                                            <a href="#">
+                                                <img src="/assets/images/demo/shop/products/100x100/p14.jpg" width="80" height="80" alt="featured item">
+                                            </a>
+                                        </div>
+
+                                        <a class="block size-1" href="#">Cotton 100% - Pink Dress</a>
+                                        <div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
+                                        <div class="size-18 text-left">$77.00</div>
+                                    </li><!-- /item -->
+
+                                </ul>
+                            </div><!-- /SLIDE 2 -->
+
+                        </div>
+
+                    </div>*@
+                <!-- /FEATURED -->
+
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- / -->
+@section Scripts
+{
+    <script src="~/assets/js/view/demo.shop.js">
+    </script>
+    <script>
+        function pageid(id) {
+            var Search = $("#Search").val();
+            var ProductCategory = $("#ProductCategory").val();
+            window.open("/ProductArchive?pageId=" + id + "&ProductCategory=" + ProductCategory + "&Search=" + Search, "_parent");
+        }
+
+        function searchonclic() {
+            var Search = $("#searchTextBox").val();
+            var ProductCategory = $("#ProductCategory").val();
+            window.open("/ProductArchive?pageId=1" + "&ProductCategory=0" + "&Search=" + Search, "_parent");
+        }
+
+        $('#searchTextBox').bind("enterKey", function (e) {
+            searchonclic();
+        });
+        $('#searchTextBox').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $(this).trigger("enterKey");
+            }
+        });
+
+    </script>
+}

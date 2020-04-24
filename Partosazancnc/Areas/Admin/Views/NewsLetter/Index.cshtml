@@ -1,0 +1,240 @@
+﻿@model IEnumerable<Partosazancnc.Models.NewsLetters>
+
+@{
+    ViewBag.Title = "خبر نامه ها";
+}
+
+
+
+<p>
+    @Html.ActionLink("خبر نامه جدید", "CreateNewsLetter", new { }, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.NewsLetterListId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Days)
+        </th>
+
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="item_@item.NewsLetterId" class="@(item.IsActive == true ? "info" : "")">
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.NewsLetterList.NewsLetterListTitle)
+            </td>
+            <td>
+                @if (item.DateTime.ToString().Contains("1380"))
+                {
+                    @item.DateTime.ToString("ساعت HH:mm");
+                }
+                else
+                {
+                    @item.DateTime.ToString("yyyy/MM/dd  ساعت HH:mm")
+                }
+
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.Days))
+                {
+                    foreach (var ss in item.Days.Split(','))
+                    {
+                        switch (ss.ToLower())
+                        {
+                            case "monthly":
+                                <span class=" btn-primary btn-xs">ماهانه</span>
+                                break;
+                            case "dayly":
+                                <span class=" btn-primary btn-xs">روزانه</span>
+                                break;
+                            case "saturday":
+                                <span class=" btn-primary btn-xs">شنبه</span>
+                                break;
+
+                            case "sunday":
+                                <span class=" btn-primary btn-xs">یکشنبه</span>
+
+                                break;
+                            case "monday":
+                                <span class=" btn-primary btn-xs">دوشنیه</span>
+
+                                break;
+                            case "tuesday":
+                                <span class=" btn-primary btn-xs">سه شنبه</span>
+
+                                break;
+                            case "wednesday":
+                                <span class=" btn-primary btn-xs">چهارشنبه</span>
+
+                                break;
+                            case "thursday":
+                                <span class=" btn-primary btn-xs">پنجشنبه</span>
+
+                                break;
+                            case "friday":
+                                <span class=" btn-primary btn-xs">جمعه</span>
+
+                                break;
+
+                        }
+                    }
+                }
+                @if (item.DateTime < DateTime.Now && !item.DateTime.ToString().Contains("1380"))
+                {
+                    <span>ارسال شده</span>
+                }
+                @if (item.Days == null && item.DateTime > DateTime.Now)
+                {
+                    <span>در صف ارسال</span>
+                }
+
+            </td>
+
+
+
+            
+
+
+            <td>
+
+                @if (item.DateTime > DateTime.Now || item.Days != null)
+                {
+                    <a href="/Admin/NewsLetter/EditeNewsLetter/@item.NewsLetterId" class="btn btn-warning btn-xs">ویرایش </a>
+                }
+                @if (item.DateTime > DateTime.Now || item.Days != null)
+                {
+
+                    <span id="btnitem_@item.NewsLetterId">
+
+                        @if (item.IsActive == false)
+                        {
+                            <a id="itempub_@item.NewsLetterId" onclick="PublishComment(@item.NewsLetterId)" class="btn btn-success btn-xs ">فعال</a>
+                        }
+                        else
+                        {
+                            <a id="itemdraf_@item.NewsLetterId" onclick="DraftComment(@item.NewsLetterId)" class="btn btn-info btn-xs ">غیره فعال</a>
+                        }
+                    </span>
+                }
+
+
+
+
+
+
+
+                <a onclick="deleterow(@item.NewsLetterId)" class="btn btn-danger btn-xs">حذف</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts
+{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function deleterow(id) {
+            swal({
+                title: "آیا از پاک کردن این خبر نامه اطمینان دارید ؟",
+
+                icon: "warning",
+
+                buttons: ["خیر", "بله پاک کن"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/NewsLetter/DeleteNewsLetter/' + id,
+                            function () {
+                                $("#item_" + id).hide('slow');
+                                swal("خبر نامه انتخاب شده با موفقیت حذف گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور حذف متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        function PublishComment(id) {
+            swal({
+                title: "آیا از فعال سازی این خبر نامه اطمینان دارید ؟",
+
+                icon: "info",
+
+                buttons: ["خیر", "بله "],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/NewsLetter/PublishNewsLetter/' + id,
+                            function () {
+                                $("#item_" + id).addClass('info');
+                                $("#itempub_" + id).remove();
+                                $("#btnitem_" + id).append('<a id="itemdraf_' +
+                                    id +
+                                    '" onclick="DraftComment(' +
+                                    id +
+                                    ')" class="btn btn-info btn-xs ">غیره فعال</a>');
+                                swal("خبر نامه  انتخاب شده فعال گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        function DraftComment(id) {
+            swal({
+                title: "آیا از غیره فعال سازی این خبر نامه اطمینان دارید ؟",
+
+                icon: "info",
+
+                buttons: ["خیر", "بله "],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.get('/Admin/NewsLetter/DraftNewsLetter/' + id,
+                            function () {
+                                $("#item_" + id).removeClass();
+                                $("#itemdraf_" + id).remove();
+                                $("#btnitem_" + id).append('<a id="itempub_' +
+                                    id +
+                                    '" onclick="PublishComment(' +
+                                    id +
+                                    ')" class="btn btn-success btn-xs ">فعال</a>');
+                                swal("خبرنامه انتخاب شده غیره فعال گردید .",
+                                    {
+                                        icon: "success",
+                                        button: "تایید"
+                                    });
+                            });
+
+                    } else {
+                        swal("دستور متوقف گردید", { button: "تایید" });
+                    }
+                });
+        }
+        
+        
+    </script>
+}

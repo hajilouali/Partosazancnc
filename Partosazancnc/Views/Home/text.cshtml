@@ -1,0 +1,24 @@
+﻿@model Partosazancnc.Models.Post
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+<h2>View</h2>
+<form action="/Test/Index" method="POST">
+    <textarea id="my-textarea" name="Mytext"></textarea>
+    <input type="submit" value="OK" />
+</form>
+
+
+@section Scripts
+{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/adapters/jquery.js"></script>
+    <script>
+        $(function () {
+            $('#my-textarea').ckeditor();
+
+        });
+    </script>
+}
